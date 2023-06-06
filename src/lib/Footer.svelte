@@ -9,6 +9,12 @@
         {@html $_('header')}
         <br />{@html $_('by')} <a href="https://twitter.com/Fry2412">HFZ</a>
         <br />2023 - 2333
+
+    </div>
+    <div id="footer-icons">
+        <a class="icon" title="This app on GitHub" href="https://github.com/Stolzmonat/StolzGenerator">
+            <img alt="GitHub icon" src="https://hihiqy1.nl/index_assets/icons/mark-github.svg" />
+        </a>
     </div>
 </footer>
 

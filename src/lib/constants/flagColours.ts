@@ -42,6 +42,13 @@ export const flagColours = {
     "#e8031a",
     "#ae0d12",
   ],
+  "Estonian Pride": [
+    "#0071cd",
+    "#134578",
+    "#000000",
+    "#242422",
+    "#949599"
+  ],
   "French Pride": [
     "-",
     "#21468c",
@@ -84,6 +91,14 @@ export const flagColours = {
     "#ffffff",
     "#ff873e",
     "#ff6f00",
+  ],
+  "Liechtenstein Pride": [
+    "#002A80",
+    "#4857B4",
+    "#8189EE",
+    "#FF6C62",
+    "#FB4E4A",
+    "#CF0F26"
   ],
   "Argentine Pride": [
     "#3f91e7",
@@ -176,6 +191,12 @@ export const flagColours = {
     "#7aa136",
     "#6d9131",
   ],
+  "Luxemburg Pride": ["#EE2839","#F15A3D","#FFB49F","FFFFFF","#A9E1FA","#01A1DF"],
+  "Monaco Pride": ["#CF0F26","#F23E3F","#FF5852","#FF8C7A","#C3C3C3","#E4E4E4","#FFFFFF"],
+  "Serbian Pride": ["#C6353C","#603C4A","#01224B","#0A3E77","#95DAF9","#FFFFFF"],
+  "Slowakian Pride": ["#ffffff","#8dffff","#688fee","#0a4ea3","#e51f80","#ee1a26"],
+  "Slowenian Pride": ["#ffffff","#8dffff","#005cfd","#0000FE","#e51f80","#fe0000"],
+  "Lithuanian Pride": ["#fdb910","#C5A72F","#7B7A3A","#006a44","#FA6058","#C1262C"],
   "Lativan Pride": ["#8d080d", "#9d2f32", "#ffffff", "#9d2f32", "#8d080d"],
   //   "Czech Pride": ["./czech"],
   "American Pride": ["./usa"],

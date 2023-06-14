@@ -4,6 +4,7 @@ import { drawUnionjack } from "../drawFlags/drawUnionJack";
 import { drawUSAFlag } from "../drawFlags/drawUsaFlag";
 import { drawGreeceFlag } from "../drawFlags/drawGreeceFlag";
 import { drawChileanFlag } from "../drawFlags/drawChileanFlag";
+import { getPng } from "./PngHelper";
 
 /// Default ratio = 7:4
 export function generateFlag(
@@ -26,7 +27,8 @@ export function generateFlag(
         size.height
       );
     }
-  } else {
+    return canvas.toDataURL();
+  } else if (colors[0].startsWith("#")) {
     for (let i = 0; i < colors.length; i++) {
       ctx.fillStyle = colors[i];
       ctx.fillRect(
@@ -36,25 +38,12 @@ export function generateFlag(
         size.height / colors.length
       );
     }
+    return canvas.toDataURL();
   }
 
   for (var item in flagColours) {
     if (flagColours[item] == colors) {
-      if (item?.toLowerCase().startsWith("swiss")) {
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(
-          canvas.width / 2 - 3,
-          canvas.height * 0.1,
-          10,
-          canvas.height * 0.8
-        );
-        ctx.fillRect(
-          canvas.width * 0.1,
-          canvas.height / 2 - 3,
-          canvas.width * 0.8,
-          10
-        );
-      } else if (item?.toLowerCase().startsWith("amer")) {
+      if (item?.toLowerCase().startsWith("amer")) {
         drawUSAFlag(canvas, ctx);
       } else if (item?.toLowerCase().startsWith("uk p")) {
         drawUnionjack(canvas, ctx);
@@ -62,6 +51,8 @@ export function generateFlag(
         drawGreeceFlag(canvas, ctx);
       } else if (item?.toLowerCase().startsWith("chile")) {
         drawChileanFlag(canvas, ctx);
+      } else {
+        getPng(item, canvas, ctx);
       }
     }
   }

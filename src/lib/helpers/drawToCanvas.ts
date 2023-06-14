@@ -7,8 +7,10 @@ import { drawUSAFlag } from "../drawFlags/drawUsaFlag";
 import { drawUnionjack } from "../drawFlags/drawUnionJack";
 import { drawGreeceFlag } from "../drawFlags/drawGreeceFlag";
 import { drawChileanFlag } from "../drawFlags/drawChileanFlag";
-import { drawCanadianFlag } from "../drawFlags/drawCanadianFlag";
+import { getPng } from "./PngHelper";
 
+const flagKeys = Object.keys(flagColours);
+// console.log(flagKeys);
 /**
     @param now - the amount of milliseconds elapsed in the animation
 */
@@ -114,10 +116,9 @@ function drawFlag(
     drawGreeceFlag(canvas, ctx);
   } else if (options.selectedColors[0].startsWith("./chile")) {
     drawChileanFlag(canvas, ctx);
-  } else if (options.selectedColors[0].startsWith("./canada")) {
-    drawCanadianFlag(canvas, ctx);
+  } else if (flagKeys.includes(options.selectedColors[0])) {
+    getPng(options.selectedColors[0], canvas, ctx);
   } else if (!options.isGradient) {
-    // console.log(options.selectedColors);
     if (options.selectedColors[0] == "-") {
       for (let i = 1; i < options.selectedColors.length; i++) {
         ctx.fillStyle = options.selectedColors[i];
@@ -199,26 +200,26 @@ function drawFlag(
     }
   }
 
-  // 320, 320
-  for (var item in flagColours) {
-    if (flagColours[item] == options.selectedColors) {
-      if (item.toLowerCase().startsWith("swiss")) {
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(
-          canvas.width / 2 - 30,
-          canvas.height * 0.1,
-          60,
-          canvas.height * 0.8
-        );
-        ctx.fillRect(
-          canvas.width * 0.1,
-          canvas.height / 2 - 30,
-          canvas.width * 0.8,
-          60
-        );
-      }
-    }
-  }
+  // // 320, 320
+  // for (var item in flagColours) {
+  //   if (flagColours[item] == options.selectedColors) {
+  //     if (item.toLowerCase().startsWith("swiss")) {
+  //       ctx.fillStyle = "#FFFFFF";
+  //       ctx.fillRect(
+  //         canvas.width / 2 - 30,
+  //         canvas.height * 0.1,
+  //         60,
+  //         canvas.height * 0.8
+  //       );
+  //       ctx.fillRect(
+  //         canvas.width * 0.1,
+  //         canvas.height / 2 - 30,
+  //         canvas.width * 0.8,
+  //         60
+  //       );
+  //     }
+  //   }
+  // }
 
   ctx.restore();
 }

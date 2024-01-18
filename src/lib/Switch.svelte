@@ -9,25 +9,33 @@
     function element_mouseLeave() {
         isHovering = false;
     }
+
+    // Function to toggle the checked state
+    function toggleChecked() {
+        checked = !checked;
+    }
 </script>
 
-<label
+<div
     tabindex="0"
-    on:keydown={event => {
-        if (event.key == "Enter") event.currentTarget.click();
-    }}
     role="checkbox"
+    aria-checked={checked}
+    class:hover={isHovering}
     on:mouseenter={element_mouseEnter}
     on:mouseleave={element_mouseLeave}
-    class:hover={isHovering}
+    on:keydown={event => {
+        if (event.key == "Enter") toggleChecked();
+    }}
+    on:click={toggleChecked}
 >
-    <input type="checkbox" bind:checked />
+    <!-- Bind the checked property to the input -->
+    <input type="checkbox" bind:checked hidden />
     <span class="check-ind"><span class="check-ind-k" /></span>
     <p><slot /></p>
-</label>
+</div>
 
 <style>
-    label > p {
+    div > p {
         display: inline;
         vertical-align: middle;
     }
@@ -64,11 +72,11 @@
     input[type="checkbox"]:checked ~ span.check-ind span.check-ind-k {
         margin-left: 1.125rem;
     }
-    label.hover span.check-ind {
+    div.hover span.check-ind {
         transform: scale3d(1.1, 1.1, 1);
         margin-right: 0.5rem;
     }
-    label.hover span.check-ind-k {
+    div.hover span.check-ind-k {
         background-color: hsl(0, 0%, 95%);
     }
 </style>

@@ -71,9 +71,6 @@ export function getPng(discriminator: string, canvas, ctx) {
       case "thail":
         flag = thai;
         break;
-      case "thail":
-        flag = thai;
-        break;
       case "swedi":
         flag = sweden;
         break;

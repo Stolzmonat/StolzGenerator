@@ -1,5 +1,5 @@
 import { assetToImage } from "../helpers/assetToImage";
-import img from '../../assets/flags/brazil.png';
+import img from '../../assets/flags/canada.png';
 
 var flag = await assetToImage(img);
 

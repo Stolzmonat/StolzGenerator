@@ -71,17 +71,18 @@
   }
 </script>
 
-<label
+<button
   id="dropzone"
   tabindex="0"
   on:keydown={(event) => {
-    if (event.key == "Enter") event.currentTarget.click();
+    if (event.key == "Enter") fi.click();
   }}
-  role="button"
+  on:click={() => fi.click()}
   on:dragover={handleDragOver}
   on:dragexit={handleDragExit}
   on:drop={handleDrop}
   class:draggingover={isDraggingOver}
+  aria-label="Drop files here or click to upload"
 >
   <input
     type="file"
@@ -90,10 +91,8 @@
     accept={filter}
     tabindex="-1"
   />
-  <span
-    >{@html $_('drop-off-note')}</span
-  >
-</label>
+  <span>{@html $_('drop-off-note')}</span>
+</button>
 
 <style>
   #dropzone {

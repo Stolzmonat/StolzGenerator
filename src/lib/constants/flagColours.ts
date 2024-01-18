@@ -266,4 +266,5 @@ export const flagColours = {
   "South African Pride": ["South African Pride"],
   "Maltese Pride": ["Maltese Pride"],
   "Japanese Pride": ["Japanese Pride"],
+  "Team Remigration": ["Team Remigration"],
 }

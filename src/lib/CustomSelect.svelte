@@ -9,6 +9,7 @@
     let disablé: boolean = false;
 
     let optionsElement: HTMLDivElement;
+    $: ariaExpanded = hovering;
 
     function mouseOver() {
         hovering = true;
@@ -54,9 +55,12 @@
     on:mouseup={mouseUp}
     tabindex="0"
     role="combobox"
+    aria-controls="options-container"
+    aria-expanded={ariaExpanded}
     on:keydown={keyDownHandler}
 >
-    <div class="options" bind:this={optionsElement}>
+    <div class="options" id="options-container" bind:this={optionsElement}>
+
         {#each options as option}
             <CustomSelectOption {option} bind:group={selected} mainHovering={hovering} disabled={!(hovering && !disablé)} />
         {/each}

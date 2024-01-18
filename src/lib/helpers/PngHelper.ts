@@ -38,6 +38,9 @@ import maltese from "../../assets/flags/malta.png";
 
 import japanese from "../../assets/flags/japan.png";
 
+import tr from "../../assets/flags/remigration.png";
+
+
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
 const thai = await assetToImage(th);
@@ -57,11 +60,15 @@ const turkey = await assetToImage(turkish);
 const southafrica = await assetToImage(southafrican);
 const malta = await assetToImage(maltese);
 const japan = await assetToImage(japanese);
+const remigra = await assetToImage(tr);
 
 export function getPng(discriminator: string, canvas, ctx) {
   try {
     var flag: HTMLImageElement;
     switch (discriminator.toLowerCase().substring(0, 5)) {
+      case "remigo":
+        flag = remigra;
+        break;
       case "brazi":
         flag = brazil;
         break;

@@ -249,6 +249,7 @@ export const flagColours = {
   "Greece Pride": ["./greece"],
   "Chilean Pride": ["./chile"],
   "Canadian Pride": ["Canadian Pride"],
+  "Bavarian Pride": ["Bavarian Pride"],
   "Brazilian Pride": ["Brazilian Pride"],
   "Thailand Pride": ["Thailand Pride"],
   "Swedish Pride": ["Swedish Pride"],
@@ -266,5 +267,7 @@ export const flagColours = {
   "South African Pride": ["South African Pride"],
   "Maltese Pride": ["Maltese Pride"],
   "Japanese Pride": ["Japanese Pride"],
-  "Team Remigration": ["Team Remigration"],
+  "Team Remigration (blue)": ["Team Remigration (blue)"],
+  "Team Remigration (white)": ["Team Remigration (white)"],
+  "Gruppe Abschiebung": ["Gruppe Abschiebung"],
 }

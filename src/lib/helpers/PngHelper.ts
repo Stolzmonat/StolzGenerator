@@ -8,6 +8,8 @@ import th from "../../assets/flags/thai.png";
 
 import sw from "../../assets/flags/sweden.png";
 
+import boarisch from "../../assets/flags/bavaria.png";
+
 import swis from "../../assets/flags/swissPride.png";
 
 import denmark from "../../assets/flags/denmark.png";
@@ -38,11 +40,16 @@ import maltese from "../../assets/flags/malta.png";
 
 import japanese from "../../assets/flags/japan.png";
 
-import tr from "../../assets/flags/remigration.png";
+import remigrationb from "../../assets/flags/remigrationb.png";
+
+import remigrationw from "../../assets/flags/remigrationw.png";
+
+import abschiebung from "../../assets/flags/abschiebung.png";
 
 
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
+const bavaria = await assetToImage(boarisch);
 const thai = await assetToImage(th);
 const sweden = await assetToImage(sw);
 const swiss = await assetToImage(swis);
@@ -60,73 +67,55 @@ const turkey = await assetToImage(turkish);
 const southafrica = await assetToImage(southafrican);
 const malta = await assetToImage(maltese);
 const japan = await assetToImage(japanese);
-const remigra = await assetToImage(tr);
+const teamrb = await assetToImage(remigrationb);
+const teamrw = await assetToImage(remigrationw);
+const grabsch = await assetToImage(abschiebung);
 
 export function getPng(discriminator: string, canvas, ctx) {
   try {
-    var flag: HTMLImageElement;
-    switch (discriminator.toLowerCase().substring(0, 5)) {
-      case "remigo":
-        flag = remigra;
+    const flagMap = {
+      "brazil": brazil,
+      "canadian": canada,
+      "thailand": thai,
+      "swedish": sweden,
+      "bavaria": bavaria,
+      "swiss": swiss,
+      "danish": denish,
+      "finnish": finland,
+      "iceland": iceland,
+      "english": england,
+      "scottish": scottland,
+      "welsh": wales,
+      "australia": aussi,
+      "new zealand": newzealand,
+      "bosnia": bosnia,
+      "jamaica": jamaica,
+      "turkish": turkey,
+      "south africa": southafrica,
+      "maltese": malta,
+      "japan": japan,
+      "team remigration (blue)": teamrb,
+      "team remigration (white)": teamrw,
+      "gruppe abschiebung": grabsch
+    };
+
+    const disc = discriminator.toLowerCase();
+    let flag = null;
+
+    for (const key in flagMap) {
+      if (disc.startsWith(key)) {
+        flag = flagMap[key];
         break;
-      case "brazi":
-        flag = brazil;
-        break;
-      case "canad":
-        flag = canada;
-        break;
-      case "thail":
-        flag = thai;
-        break;
-      case "swedi":
-        flag = sweden;
-        break;
-      case "swiss":
-        flag = swiss;
-        break;
-      case "danis":
-        flag = denish;
-        break;
-      case "icela":
-        flag = iceland;
-        break;
-      case "finni":
-        flag = finland;
-        break;
-      case "engli":
-        flag = england;
-        break;
-      case "scott":
-        flag = scottland;
-        break;
-      case "welsh":
-        flag = wales;
-        break;
-      case "austr":
-        flag = aussi;
-        break;
-      case "new z":
-        flag = newzealand;
-        break;
-      case "bosni":
-        flag = bosnia;
-        break;
-      case "turki":
-        flag = turkey;
-        break;
-      case "jamai":
-        flag = jamaica;
-        break;
-      case "south":
-        flag = southafrica;
-        break;
-      case "malte":
-        flag = malta;
-        break;
-      case "japan":
-        flag = japan;
-        break;
+      }
     }
-    ctx.drawImage(flag, 0, 0, canvas.width, canvas.height);
-  } catch (e) {}
+
+    if (flag) {
+      ctx.drawImage(flag, 0, 0, canvas.width, canvas.height);
+    } else {
+      // Handle default case or throw an error
+    }
+  } catch (e) {
+    // Handle or log the error
+  }
 }
+

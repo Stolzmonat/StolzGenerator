@@ -17,3 +17,8 @@ start application in dev mode
 
 build application
 `npm run build`
+
+## Special Thanks ❤️
+
+* [Matthias Helferich's Remigration](https://matthiashelferich.de/remigration/)
+* [Doinyo-you-know-what-you-did-maam](https://twitter.com/doinyo_maam)

@@ -5,27 +5,21 @@
     export let group: string;
 </script>
 
-<div 
-    class="option" 
-    tabindex="0" 
+<label
+    for={option.value}
+    class="option"
+    tabindex="0"
+    role="radio"
     on:keydown={event => {
-        if (event.key == "Enter") event.currentTarget.querySelector('input[type="radio"]').click();
+        if (event.key == "Enter") event.currentTarget.click();
     }}
-    role="radio" 
-    aria-checked={option.value === group}
 >
-    <input 
-        id={option.value} 
-        type="radio" 
-        name="type" 
-        value={option.value} 
-        bind:group
-    />
-    <label for={option.value}>
-        <span class="check-ind"><span class="check-ind-k" /></span>
-        <span>{option.label}</span>
-    </label>
-</div>
+    <input id={option.value} type="radio" name="type" value={option.value} bind:group />
+    <span class="check-ind"><span class="check-ind-k" /></span>
+    <span>
+        {option.label}
+    </span>
+</label>
 
 <style>
     .option {
@@ -33,9 +27,7 @@
         grid-auto-columns: min-content;
         gap: 0.5rem;
         align-items: center;
-        cursor: pointer;
     }
-
     .option > * {
         grid-row: 1;
         vertical-align: middle;
@@ -58,8 +50,7 @@
         margin-right: 0.25rem;
     }
 
-    /* Adjusted for new structure: hover effect on .option */
-    .option:hover .check-ind {
+    input[type="radio"]:hover ~ .check-ind {
         transform: scale3d(1.1, 1.1, 1);
         border: 2px solid hsl(0, 0%, 80%);
     }

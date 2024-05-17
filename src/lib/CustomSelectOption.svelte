@@ -3,26 +3,21 @@
     export let mainHovering: boolean = false;
     export let group: string;
     export let disabled: boolean = true;
-
-    // Function to handle keyboard events for accessibility
-    function handleKeydown(e: KeyboardEvent) {
-        if (e.key === "Enter") {
-            // Logic to select this option
-        }
-    }
 </script>
 
 <div class="option" class:main-hovering={mainHovering}>
-    <input 
-        id={option.value} 
-        type="radio" 
-        name="color" 
-        value={option.value} 
-        bind:group 
-        {disabled} 
-        aria-label={option.label}  
-    />
-    <label for={option.value}>
+    <input id={option.value} type="radio" name="color" value={option.value} bind:group {disabled} />
+    <label
+        for={option.value}
+        tabindex="0"
+        role="option"
+        on:keydown={e => {
+            console.info("itemclick");
+            if (e.key === "Enter") {
+                e.currentTarget.click();
+            }
+        }}
+    >
         <img src={option.icon} alt="" />
         {option.label}
     </label>

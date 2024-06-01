@@ -270,4 +270,5 @@ export const flagColours = {
   "Team Remigration (blue)": ["Team Remigration (blue)"],
   "Team Remigration (white)": ["Team Remigration (white)"],
   "Gruppe Abschiebung": ["Gruppe Abschiebung"],
+  "Czech Pride": ["Czech Pride"]
 }

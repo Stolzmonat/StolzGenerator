@@ -1,7 +1,16 @@
-export function drawCzechFlag(canvas, ctx) {
-  var height = canvas.height;
-  var width = height * 1.9;
+export interface Canvas {
+  height: number;
+  width: number;
+}
 
+export interface Context {
+  fillStyle: string;
+  fillRect(x: number, y: number, width: number, height: number): void;
+}
+
+export function drawCzechFlag(canvas: Canvas, ctx: Context) {
+  var height: number = canvas.height;
+  var width: number = height * 1.9;
 
   // draw white
   ctx.fillStyle = "#ffffff";
@@ -10,6 +19,4 @@ export function drawCzechFlag(canvas, ctx) {
   // draw red
 
   // draw blue triangle
-
-
 }

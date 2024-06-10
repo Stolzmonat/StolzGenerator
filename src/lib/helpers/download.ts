@@ -8,42 +8,42 @@ export function download(
   options: CanvasDrawOptions
 ): Promise<void> {
   return new Promise(async (resolve, reject) => {
-    let frames: HTMLElement[] = [];
+    let frames: string[] = [];
 
-    let selectedImage: HTMLImageElement;
+    let selectedImage: HTMLImageElement | null = null;
     if (selectedFile) {
-      selectedImage = await fileToImage(selectedFile);
+      try {
+        selectedImage = await fileToImage(selectedFile);
+      } catch (error) {
+        return reject(error);
+      }
     }
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    if (selectedFile) {
-        canvas.width = selectedImage.width;
-        canvas.height = selectedImage.width;
-    } else {
-    canvas.width = 512;
-    canvas.height = 512;
+    if (ctx === null) {
+      return reject(new Error("Unable to get canvas context"));
     }
 
-    if (options.isRotating) {
-      let fps = 30;
+    if (selectedFile && selectedImage) {
+      canvas.width = selectedImage.width;
+      canvas.height = selectedImage.height;
+    } else {
+      canvas.width = 512;
+      canvas.height = 512;
+    }
+
+    if (options.isRotating && selectedImage) {
+      const fps = 30;
+      const frameCount = fps * options.animationLength;
 
       canvas.width = Math.min(canvas.width, 256);
       canvas.height = Math.min(canvas.height, 256);
 
-      for (let i = 0; i < fps * options.animationLength; i++) {
+      for (let i = 0; i < frameCount; i++) {
         drawToCanvas(canvas, ctx, selectedImage, options, i / fps);
-
-        frames.push(
-          await new Promise((resolveImg) => {
-            let img = new Image();
-            img.onload = () => {
-              resolveImg(img);
-            };
-            img.src = canvas.toDataURL();
-          })
-        );
+        frames.push(canvas.toDataURL());
       }
 
       gifshot.createGIF(
@@ -51,26 +51,29 @@ export function download(
           gifWidth: canvas.width,
           gifHeight: canvas.height,
           images: frames,
+          numFrames: frames.length,
           interval: 1 / fps,
-          // progressCallback: (captureProgress: number) => {
-          //     // console.log(captureProgress);
-          // },
+          frameDuration: 1 / fps,
+          sampleInterval: 10, // Increase the sample interval for better quality
+          saveRenderingContexts: true, // Save rendering contexts for better quality
         },
-        (obj) => {
+        (obj: { error: boolean, image: string }) => {
           if (!obj.error) {
-            let image = obj.image;
-            const link = document.createElement("a");
+            const image: string = obj.image;
+            const link: HTMLAnchorElement = document.createElement("a");
             link.download = "lpppog_ani" + Date.now() + ".gif";
             link.href = image;
             link.click();
             resolve();
           } else {
-            reject();
+            reject(new Error("GIF creation failed"));
           }
         }
       );
     } else {
-      drawToCanvas(canvas, ctx, selectedImage, options, 0);
+      if (selectedImage) {
+        drawToCanvas(canvas, ctx, selectedImage, options, 0);
+      }
 
       const link = document.createElement("a");
       link.download = "lpppog" + Date.now() + ".png";

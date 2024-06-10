@@ -9,33 +9,39 @@ import { getPng } from "./PngHelper";
 /// Default ratio = 7:4
 export function generateFlag(
   colors: string[],
-  size: Size = new Size(105, 60)
+  size: Size = new Size(105, 60),
+  originalAspectRatio: number = 7 / 4 // default aspect ratio
 ): string {
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")!;
+
+  // Calculate new height based on original aspect ratio
+  const newHeight = size.width / originalAspectRatio;
 
   canvas.width = size.width;
-  canvas.height = size.height;
+  canvas.height = newHeight;
 
   if (colors[0] == "-") {
     for (let i = 1; i < colors.length; i++) {
       ctx.fillStyle = colors[i];
+      const rectWidth = size.width / (colors.length - 1);
       ctx.fillRect(
-        ((i - 1) * size.width) / (colors.length - 1),
+        ((i - 1) * rectWidth),
         0,
-        size.width / (colors.length - 1),
-        size.height
+        rectWidth,
+        newHeight
       );
     }
     return canvas.toDataURL();
   } else if (colors[0].startsWith("#")) {
     for (let i = 0; i < colors.length; i++) {
       ctx.fillStyle = colors[i];
+      const rectHeight = newHeight / colors.length;
       ctx.fillRect(
         0,
-        (i * size.height) / colors.length,
+        (i * rectHeight),
         size.width,
-        size.height / colors.length
+        rectHeight
       );
     }
     return canvas.toDataURL();

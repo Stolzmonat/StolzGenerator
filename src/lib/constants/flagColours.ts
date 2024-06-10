@@ -1,4 +1,9 @@
-export const flagColours = {
+export interface FlagColours {
+  [key: string]: string[]
+}
+
+
+export const flagColours: FlagColours = {
   "German Pride": [
     "#000000",
     "#49000b",

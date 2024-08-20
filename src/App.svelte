@@ -80,7 +80,7 @@
     </header>
 
     <LocaleSelector
-      value={$locale}
+      value={$locale ?? 'en'}
       on:locale-changed={(e) => setupI18n({ withLocale: e.detail })}
     />
 

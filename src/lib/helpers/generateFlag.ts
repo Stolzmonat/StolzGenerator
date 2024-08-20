@@ -17,29 +17,30 @@ export function generateFlag(
   canvas.width = size.width;
   canvas.height = size.height;
 
-  if (colors[0] == "-") {
-    for (let i = 1; i < colors.length; i++) {
-      ctx.fillStyle = colors[i];
-      ctx.fillRect(
-        ((i - 1) * size.width) / (colors.length - 1),
-        0,
-        size.width / (colors.length - 1),
-        size.height
-      );
+  if (ctx)
+    if (colors[0] == "-") {
+      for (let i = 1; i < colors.length; i++) {
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(
+          ((i - 1) * size.width) / (colors.length - 1),
+          0,
+          size.width / (colors.length - 1),
+          size.height
+        );
+      }
+      return canvas.toDataURL();
+    } else if (colors[0].startsWith("#")) {
+      for (let i = 0; i < colors.length; i++) {
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(
+          0,
+          (i * size.height) / colors.length,
+          size.width,
+          size.height / colors.length
+        );
+      }
+      return canvas.toDataURL();
     }
-    return canvas.toDataURL();
-  } else if (colors[0].startsWith("#")) {
-    for (let i = 0; i < colors.length; i++) {
-      ctx.fillStyle = colors[i];
-      ctx.fillRect(
-        0,
-        (i * size.height) / colors.length,
-        size.width,
-        size.height / colors.length
-      );
-    }
-    return canvas.toDataURL();
-  }
 
   for (var item in flagColours) {
     if (flagColours[item] == colors) {

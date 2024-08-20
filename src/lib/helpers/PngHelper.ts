@@ -48,6 +48,8 @@ import abschiebung from "../../assets/flags/abschiebung.png";
 
 import czechish from "../../assets/flags/czech.png";
 
+import shlomo from "../../assets/flags/freeshlomo.png"
+
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
 const bavaria = await assetToImage(boarisch);
@@ -72,10 +74,11 @@ const teamrb = await assetToImage(remigrationb);
 const teamrw = await assetToImage(remigrationw);
 const grabsch = await assetToImage(abschiebung);
 const czech = await assetToImage(czechish);
+const freeshlomo = await assetToImage(shlomo);
 
-export function getPng(discriminator: string, canvas, ctx) {
+export function getPng(discriminator: string, canvas: any, ctx: any) {
   try {
-    const flagMap = {
+    const flagMap: {[key: string]: HTMLImageElement} = {
       "brazil": brazil,
       "canadian": canada,
       "thailand": thai,
@@ -99,11 +102,12 @@ export function getPng(discriminator: string, canvas, ctx) {
       "team remigration (blue)": teamrb,
       "team remigration (white)": teamrw,
       "gruppe abschiebung": grabsch,
+      "freeshlomo": freeshlomo,
       "czech" : czech
     };
 
     const disc = discriminator.toLowerCase();
-    let flag = null;
+    let flag: any = undefined;
 
     for (const key in flagMap) {
       if (disc.startsWith(key)) {

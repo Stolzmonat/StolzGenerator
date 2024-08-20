@@ -1,4 +1,4 @@
-export const flagColours = {
+export const flagColours: {[key: string]: Array<string>} = {
   "German Pride": [
     "#000000",
     "#49000b",
@@ -270,5 +270,6 @@ export const flagColours = {
   "Team Remigration (blue)": ["Team Remigration (blue)"],
   "Team Remigration (white)": ["Team Remigration (white)"],
   "Gruppe Abschiebung": ["Gruppe Abschiebung"],
-  "Czech Pride": ["Czech Pride"]
+  "Czech Pride": ["Czech Pride"],
+  "FreeShlomo": ["FreeShlomo"]
 }

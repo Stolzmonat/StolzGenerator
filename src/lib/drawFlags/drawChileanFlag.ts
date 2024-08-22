@@ -1,12 +1,12 @@
-export function drawChileanFlag(canvas, ctx) {
-  var height = canvas.height;
-  var width = height * 1.9;
+export function drawChileanFlag(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  var height: number = canvas.height;
+  var width: number = height * 1.9;
 
-  const upperLeft = ["#14388c", "#0d3d91", "#173e99"];
+  const upperLeft: string[] = ["#14388c", "#0d3d91", "#173e99"];
 
-  const upperRight = ["#e2e3e5", "#e8e9ed", "#ffffff"];
+  const upperRight: string[] = ["#e2e3e5", "#e8e9ed", "#ffffff"];
 
-  var baseColors = ["#c80f2e", "#e30011", "#e30011"];
+  var baseColors: string[] = ["#c80f2e", "#e30011", "#e30011"];
 
   //draw upper left
   for (var i = 0; i < 3; i++) {

@@ -9,13 +9,17 @@ import { getPng } from "./PngHelper";
 /// Default ratio = 7:4
 export function generateFlag(
   colors: string[],
-  size: Size = new Size(105, 60)
+  size: Size = new Size(105, 60),
+  originalAspectRatio: number = 7 / 4 // default aspect ratio
 ): string {
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")!;
+
+  // Calculate new height based on original aspect ratio
+  const newHeight = size.width / originalAspectRatio;
 
   canvas.width = size.width;
-  canvas.height = size.height;
+  canvas.height = newHeight;
 
   if (ctx)
     if (colors[0] == "-") {

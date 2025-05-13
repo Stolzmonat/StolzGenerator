@@ -50,6 +50,9 @@ import mainstream_png from "../../assets/flags/mainstream.png";
 
 import shlomo_png from "../../assets/flags/free_shlomo.png";
 
+import czechish from "../../assets/flags/czech.png";
+
+import shlomo from "../../assets/flags/freeshlomo.png"
 
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
@@ -74,12 +77,14 @@ const japan = await assetToImage(japanese);
 const teamrb = await assetToImage(remigrationb);
 const teamrw = await assetToImage(remigrationw);
 const grabsch = await assetToImage(abschiebung);
+const czech = await assetToImage(czechish);
+const freeshlomo = await assetToImage(shlomo);
 const mainstream = await assetToImage(mainstream_png);
 const shlomo = await assetToImage(shlomo_png);
 
-export function getPng(discriminator: string, canvas, ctx) {
+export function getPng(discriminator: string, canvas: any, ctx: any) {
   try {
-    const flagMap = {
+    const flagMap: {[key: string]: HTMLImageElement} = {
       "brazil": brazil,
       "canadian": canada,
       "thailand": thai,
@@ -105,11 +110,12 @@ export function getPng(discriminator: string, canvas, ctx) {
       "gruppe abschiebung": grabsch,
       "free shlomo": shlomo,
       "willkommen im mainstream": mainstream,
+      "freeshlomo": freeshlomo,
+      "czech" : czech
     };
 
     const disc = discriminator.toLowerCase();
     let flag = null;
-
 
     for (const key in flagMap) {
       if (disc.startsWith(key)) {

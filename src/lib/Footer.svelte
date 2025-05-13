@@ -7,7 +7,7 @@
   <img src={appIcon} alt="" />
   <div>
     {@html $_("header")}
-    <br />{@html $_("by")} <a href="https://twitter.com/Fry2412">HFZ</a>
+    <br />{@html $_("by")} <a href="https://twitter.com/HaeFZett">HFZ</a>
     <br />2023 - 2333
   </div>
   <div id="footer-icons">

@@ -46,6 +46,10 @@ import remigrationw from "../../assets/flags/remigrationw.png";
 
 import abschiebung from "../../assets/flags/abschiebung.png";
 
+import mainstream_png from "../../assets/flags/mainstream.png";
+
+import shlomo_png from "../../assets/flags/free_shlomo.png";
+
 
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
@@ -70,6 +74,8 @@ const japan = await assetToImage(japanese);
 const teamrb = await assetToImage(remigrationb);
 const teamrw = await assetToImage(remigrationw);
 const grabsch = await assetToImage(abschiebung);
+const mainstream = await assetToImage(mainstream_png);
+const shlomo = await assetToImage(shlomo_png);
 
 export function getPng(discriminator: string, canvas, ctx) {
   try {
@@ -96,11 +102,14 @@ export function getPng(discriminator: string, canvas, ctx) {
       "japan": japan,
       "team remigration (blue)": teamrb,
       "team remigration (white)": teamrw,
-      "gruppe abschiebung": grabsch
+      "gruppe abschiebung": grabsch,
+      "free shlomo": shlomo,
+      "willkommen im mainstream": mainstream,
     };
 
     const disc = discriminator.toLowerCase();
     let flag = null;
+
 
     for (const key in flagMap) {
       if (disc.startsWith(key)) {

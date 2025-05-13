@@ -52,7 +52,6 @@ import shlomo_png from "../../assets/flags/free_shlomo.png";
 
 import czechish from "../../assets/flags/czech.png";
 
-import shlomo from "../../assets/flags/freeshlomo.png"
 
 const canada = await assetToImage(ca);
 const brazil = await assetToImage(br);
@@ -78,7 +77,6 @@ const teamrb = await assetToImage(remigrationb);
 const teamrw = await assetToImage(remigrationw);
 const grabsch = await assetToImage(abschiebung);
 const czech = await assetToImage(czechish);
-const freeshlomo = await assetToImage(shlomo);
 const mainstream = await assetToImage(mainstream_png);
 const shlomo = await assetToImage(shlomo_png);
 
@@ -108,9 +106,8 @@ export function getPng(discriminator: string, canvas: any, ctx: any) {
       "team remigration (blue)": teamrb,
       "team remigration (white)": teamrw,
       "gruppe abschiebung": grabsch,
-      "free shlomo": shlomo,
       "willkommen im mainstream": mainstream,
-      "freeshlomo": freeshlomo,
+      "freeshlomo": shlomo,
       "czech" : czech
     };
 

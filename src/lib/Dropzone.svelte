@@ -1,5 +1,6 @@
 <script lang="ts">
   import { setupI18n, dir, isLocaleLoaded, locale, _ } from "../services/i18n";
+  import { theme } from "../services/theme";
 
   let fi: HTMLInputElement;
   export let selectedFiles: File[] | undefined = [];
@@ -82,6 +83,7 @@
   on:dragexit={handleDragExit}
   on:drop={handleDrop}
   class:draggingover={isDraggingOver}
+  class:dark={$theme === 'dark'}
   aria-label="Drop files here or click to upload"
 >
   <input
@@ -104,23 +106,37 @@
     border: 2px dashed var(--ridge-color);
     border-radius: 1rem;
     transition-duration: var(--big-element-transition-duration);
+    background-color: transparent;
   }
+  
+  #dropzone.dark {
+    background-color: hsla(0, 0%, 15%, 0.5);
+  }
+  
   #dropzone:hover,
   #dropzone.draggingover {
     border-color: var(--primary-color);
     min-height: 6rem;
   }
+  
+  #dropzone.dark:hover,
+  #dropzone.dark.draggingover {
+    background-color: hsla(0, 0%, 20%, 0.7);
+  }
+  
   #dropzone span {
     color: var(--disabled-color);
     font-size: 0.8rem;
     margin: auto;
     transition-duration: var(--big-element-transition-duration);
   }
+  
   #dropzone:hover span,
   #dropzone.draggingover span {
-    color: black;
+    color: var(--text-color);
     font-size: 1rem;
   }
+  
   input[type="file"] {
     display: none;
   }
@@ -130,6 +146,7 @@
     padding: 0.5rem;
     border-radius: 0.5rem;
   }
+  
   input:focus {
     border-color: var(--primary-color);
   }

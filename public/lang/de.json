@@ -24,5 +24,7 @@
   "download-as": "Herunterladen als",
   "image-is-rendering": "Ihr Bild wird derzeit gerendert...",
   "by": "von",
-  "drop-off-note": "Ziehen Sie eine Datei hierher oder klicken Sie, um eine Datei auszuwählen"
+  "drop-off-note": "Ziehen Sie eine Datei hierher oder klicken Sie, um eine Datei auszuwählen",
+  "dark-mode": "Dunkelmodus",
+  "light-mode": "Hellmodus"
 }

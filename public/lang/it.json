@@ -24,5 +24,7 @@
   "download-as": "Scarica come",
   "image-is-rendering": "Al momento il rendering dell'immagine...",
   "by": "da",
-  "drop-off-note": "Trascinare un file qui o fare clic per scegliere un file"
+  "drop-off-note": "Trascinare un file qui o fare clic per scegliere un file",
+  "dark-mode": "Modalità scura",
+  "light-mode": "Modalità chiara"
 }

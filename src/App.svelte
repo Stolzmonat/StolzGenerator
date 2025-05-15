@@ -1,5 +1,6 @@
 <script lang="ts">
   import { setupI18n, dir, isLocaleLoaded, locale, _ } from "./services/i18n";
+  import { theme } from "./services/theme";
 
   import { slide } from "svelte/transition";
 
@@ -9,6 +10,7 @@
   import CustomSelect from "./lib/CustomSelect.svelte";
   import Slider from "./lib/Slider.svelte";
   import Switch from "./lib/Switch.svelte";
+  import ThemeSwitcher from "./lib/ThemeSwitcher.svelte";
 
   import gradientIcon from "./assets/gradient.svg";
   import resizeInwardsIcon from "./assets/resizeInwards.svg";
@@ -73,16 +75,19 @@
   />
 </svelte:head> -->
 
-<main>
+<main class={$theme}>
   {#if $isLocaleLoaded}
     <header>
       <h1>{@html $_("header")}</h1>
     </header>
 
-    <LocaleSelector
-      value={$locale ?? 'en'}
-      on:locale-changed={(e) => setupI18n({ withLocale: e.detail })}
-    />
+    <div class="controls-row">
+      <LocaleSelector
+        value={$locale ?? 'en'}
+        on:locale-changed={(e) => setupI18n({ withLocale: e.detail })}
+      />
+      <ThemeSwitcher />
+    </div>
 
     <section>
       <h2>{@html $_("data-input")}</h2>
@@ -219,6 +224,7 @@
   :root {
     --page-size: 50vw;
     --bg: white;
+    --text-color: #333333;
     --primary-color: hsla(24, 100%, 57%, 0.666);
     --slider-thumb-size: 2rem;
     --slider-thumb-bg: white;
@@ -229,6 +235,27 @@
     --small-element-transition-duration: 0.15s;
     --big-element-transition-duration: 0.3s;
     --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  /* Dark mode theme */
+  main.dark {
+    --bg: #1e1e1e;
+    --text-color: #f0f0f0;
+    --primary-color: hsla(24, 100%, 57%, 0.8);
+    --slider-thumb-bg: #444444;
+    --select-color: hsl(0, 0%, 25%);
+    --ridge-color: hsl(0, 0%, 40%);
+    --disabled-color: hsl(0, 0%, 60%);
+    background-color: var(--bg);
+    color: var(--text-color);
+  }
+  
+  /* Light mode theme - explizit für die Konsistenz */
+  main.light {
+    --bg: white;
+    --text-color: #333333;
+    background-color: var(--bg);
+    color: var(--text-color);
   }
 
   :global(html) {
@@ -279,6 +306,17 @@
     padding: 1.2rem;
     box-sizing: border-box;
     margin: 0 auto;
+  }
+
+  .controls-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 2rem;
+    width: Calc(var(--page-size) + 0.01px);
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .flexysmexy {

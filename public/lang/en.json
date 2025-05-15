@@ -24,5 +24,7 @@
   "download-as": "Download as",
   "image-is-rendering": "Currently rendering your image...",
   "by": "by",
-  "drop-off-note": "Drag a file here or click to pick a file"
+  "drop-off-note": "Drag a file here or click to pick a file",
+  "dark-mode": "Dark mode",
+  "light-mode": "Light mode"
 }

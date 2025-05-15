@@ -24,5 +24,7 @@
   "download-as": "Télécharger sous",
   "image-is-rendering": "Le rendu de votre image est en cours...",
   "by": "par",
-  "drop-off-note": "Faites glisser un fichier ici ou cliquez pour choisir un fichier"
+  "drop-off-note": "Faites glisser un fichier ici ou cliquez pour choisir un fichier",
+  "dark-mode": "Mode sombre",
+  "light-mode": "Mode clair"
 }

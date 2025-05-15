@@ -86,6 +86,165 @@ function drawFlag(
   options: CanvasDrawOptions,
   now: number
 ) {
+  // If no secondary flag is selected, draw primary flag on the entire canvas
+  if (!options.secondaryFlag || options.secondaryFlag.length === 0 || options.secondaryFlag[0] === undefined) {
+    drawSingleFlag(canvas, ctx, options.selectedColors, options, now, 1.0);
+  } 
+  // Otherwise draw primary and secondary flags on their respective halves
+  else {
+    // Apply rotation to the entire canvas before drawing the flags
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+
+    if (options.rotationOffset % 360 != 0) {
+      ctx.rotate(degToRad(options.rotationOffset % 360));
+    }
+
+    if (options.isRotating) {
+      ctx.rotate(
+        degToRad(
+          (now / options.animationLength) *
+            360 *
+            (options.isRotatingCounterClockwise ? -1 : 1) +
+            options.rotationOffset
+        )
+      );
+    }
+
+    ctx.translate(canvas.width / -2, canvas.height / -2);
+    
+    // Set global opacity
+    ctx.globalAlpha = options.overlayOpacity / 100;
+
+    // Draw primary flag on the left half
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, canvas.width / 2, canvas.height);
+    ctx.clip();
+    drawFlagContent(canvas, ctx, options.selectedColors, options);
+    ctx.restore();
+    
+    // Draw secondary flag on the right half
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+    ctx.clip();
+    drawFlagContent(canvas, ctx, options.secondaryFlag, options);
+    ctx.restore();
+    
+    ctx.restore();
+  }
+}
+
+// Draw the flag content without applying rotation
+function drawFlagContent(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  flagColors: string[],
+  options: CanvasDrawOptions
+) {
+  if (flagColors[0]?.startsWith("./usa")) {
+    drawUSAFlag(canvas, ctx);
+  } else if (flagColors[0]?.startsWith("./unionjack")) {
+    drawUnionjack(canvas, ctx);
+  } else if (flagColors[0]?.startsWith("./greece")) {
+    drawGreeceFlag(canvas, ctx);
+  } else if (flagColors[0]?.startsWith("./chile")) {
+    drawChileanFlag(canvas, ctx);
+  } else if (flagKeys.includes(flagColors[0])) {
+    getPng(flagColors[0], canvas, ctx);
+  } else if (!options.isGradient) {
+    if (flagColors[0] == "-") {
+      for (let i = 1; i < flagColors.length; i++) {
+        ctx.fillStyle = flagColors[i];
+        ctx.fillRect(
+          // x
+          i == 1
+            ? -canvas.width / 2
+            : ((i - 1) * canvas.width) / (flagColors.length - 1),
+          // y
+          -canvas.height / 2,
+          // w
+          ([1, flagColors.length].includes(i)
+            ? canvas.width / 2
+            : 0) +
+            canvas.width / (flagColors.length - 1),
+          // h
+          canvas.height * 2
+        );
+      }
+    } else {
+      for (let i = 0; i < flagColors.length; i++) {
+        ctx.fillStyle = flagColors[i];
+        ctx.fillRect(
+          -canvas.width / 2,
+          i == 0
+            ? -canvas.height / 2
+            : (i * canvas.height) / flagColors.length,
+          canvas.width * 2,
+          ([0, flagColors.length - 1].includes(i)
+            ? canvas.height / 2
+            : 0) +
+            canvas.height / flagColors.length
+        );
+      }
+    }
+  } else {
+    if (flagColors[0] == "-") {
+      let gradient = ctx.createLinearGradient(
+        0,
+        canvas.width / 2,
+        canvas.height,
+        canvas.width / 2
+      );
+
+      for (let i = 1; i < flagColors.length; i++) {
+        gradient.addColorStop(
+          i / (flagColors.length - 1),
+          flagColors[i]
+        );
+      }
+      ctx.fillStyle = gradient;
+      ctx.fillRect(
+        -canvas.width / 2,
+        -canvas.height / 2,
+        canvas.width * 2,
+        canvas.height * 2
+      );
+    } else {
+      let gradient = ctx.createLinearGradient(
+        canvas.width / 2,
+        0,
+        canvas.width / 2,
+        canvas.height
+      );
+
+      for (let i = 0; i < flagColors.length; i++) {
+        gradient.addColorStop(
+          i / (flagColors.length - 1),
+          flagColors[i]
+        );
+      }
+      ctx.fillStyle = gradient;
+      ctx.fillRect(
+        -canvas.width / 2,
+        -canvas.height / 2,
+        canvas.width * 2,
+        canvas.height * 2
+      );
+    }
+  }
+}
+
+// Keep the original drawSingleFlag function for when only one flag is shown
+function drawSingleFlag(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  flagColors: string[],
+  options: CanvasDrawOptions,
+  now: number,
+  opacity: number = 1.0
+) {
   ctx.save();
   ctx.translate(canvas.width / 2, canvas.height / 2);
 
@@ -106,120 +265,10 @@ function drawFlag(
 
   ctx.translate(canvas.width / -2, canvas.height / -2);
 
-  ctx.globalAlpha = options.overlayOpacity / 100;
+  // Apply the base opacity from options and then multiply by the flag-specific opacity
+  ctx.globalAlpha = (options.overlayOpacity / 100) * opacity;
 
-  if (options.selectedColors[0].startsWith("./usa")) {
-    drawUSAFlag(canvas, ctx);
-  } else if (options.selectedColors[0].startsWith("./unionjack")) {
-    drawUnionjack(canvas, ctx);
-  } else if (options.selectedColors[0].startsWith("./greece")) {
-    drawGreeceFlag(canvas, ctx);
-  } else if (options.selectedColors[0].startsWith("./chile")) {
-    drawChileanFlag(canvas, ctx);
-  } else if (flagKeys.includes(options.selectedColors[0])) {
-    getPng(options.selectedColors[0], canvas, ctx);
-  } else if (!options.isGradient) {
-    if (options.selectedColors[0] == "-") {
-      for (let i = 1; i < options.selectedColors.length; i++) {
-        ctx.fillStyle = options.selectedColors[i];
-        ctx.fillRect(
-          // x
-          i == 1
-            ? -canvas.width / 2
-            : ((i - 1) * canvas.width) / (options.selectedColors.length - 1),
-          // y
-          -canvas.height / 2,
-          // w
-          ([1, options.selectedColors.length].includes(i)
-            ? canvas.width / 2
-            : 0) +
-            canvas.width / (options.selectedColors.length - 1),
-          // h
-          canvas.height * 2
-        );
-      }
-    } else {
-      for (let i = 0; i < options.selectedColors.length; i++) {
-        ctx.fillStyle = options.selectedColors[i];
-        ctx.fillRect(
-          -canvas.width / 2,
-          i == 0
-            ? -canvas.height / 2
-            : (i * canvas.height) / options.selectedColors.length,
-          canvas.width * 2,
-          ([0, options.selectedColors.length - 1].includes(i)
-            ? canvas.height / 2
-            : 0) +
-            canvas.height / options.selectedColors.length
-        );
-      }
-    }
-  } else {
-    if (options.selectedColors[0] == "-") {
-      let gradient = ctx.createLinearGradient(
-        0,
-        canvas.width / 2,
-        canvas.height,
-        canvas.width / 2
-      );
-
-      for (let i = 1; i < options.selectedColors.length; i++) {
-        gradient.addColorStop(
-          i / (options.selectedColors.length - 1),
-          options.selectedColors[i]
-        );
-      }
-      ctx.fillStyle = gradient;
-      ctx.fillRect(
-        -canvas.width / 2,
-        -canvas.height / 2,
-        canvas.width * 2,
-        canvas.height * 2
-      );
-    } else {
-      let gradient = ctx.createLinearGradient(
-        canvas.width / 2,
-        0,
-        canvas.width / 2,
-        canvas.height
-      );
-
-      for (let i = 0; i < options.selectedColors.length; i++) {
-        gradient.addColorStop(
-          i / (options.selectedColors.length - 1),
-          options.selectedColors[i]
-        );
-      }
-      ctx.fillStyle = gradient;
-      ctx.fillRect(
-        -canvas.width / 2,
-        -canvas.height / 2,
-        canvas.width * 2,
-        canvas.height * 2
-      );
-    }
-  }
-
-  // // 320, 320
-  // for (var item in flagColours) {
-  //   if (flagColours[item] == options.selectedColors) {
-  //     if (item.toLowerCase().startsWith("swiss")) {
-  //       ctx.fillStyle = "#FFFFFF";
-  //       ctx.fillRect(
-  //         canvas.width / 2 - 30,
-  //         canvas.height * 0.1,
-  //         60,
-  //         canvas.height * 0.8
-  //       );
-  //       ctx.fillRect(
-  //         canvas.width * 0.1,
-  //         canvas.height / 2 - 30,
-  //         canvas.width * 0.8,
-  //         60
-  //       );
-  //     }
-  //   }
-  // }
+  drawFlagContent(canvas, ctx, flagColors, options);
 
   ctx.restore();
 }

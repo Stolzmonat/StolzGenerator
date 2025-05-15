@@ -2,6 +2,8 @@
   "header": "Générateur d'incrustation pour le Mois de la fierté",
   "data-input": "Entrée de fichier",
   "flag-selection": "Sélection des drapeaux",
+  "secondary-flag": "Drapeau secondaire (optionnel)",
+  "none": "Aucun",
   "settings": "Paramètres",
   "round": "Circulaire",
   "quad": "Carré",

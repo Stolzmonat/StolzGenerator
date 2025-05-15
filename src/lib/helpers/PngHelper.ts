@@ -107,7 +107,7 @@ export function getPng(discriminator: string, canvas: any, ctx: any) {
       "team remigration (white)": teamrw,
       "gruppe abschiebung": grabsch,
       "willkommen im mainstream": mainstream,
-      "freeshlomo": shlomo,
+      "free shlomo": shlomo,
       "czech" : czech
     };
 

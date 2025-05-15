@@ -2,6 +2,8 @@
   "header": "Generador de superposiciones del Mes del Orgullo",
   "data-input": "Entrada de archivos",
   "flag-selection": "Selección de bandera",
+  "secondary-flag": "Bandera secundaria (opcional)",
+  "none": "Ninguna",
   "settings": "Configuración",
   "round": "Circular",
   "quad": "Cuadrado",

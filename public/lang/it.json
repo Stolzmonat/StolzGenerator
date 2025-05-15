@@ -2,6 +2,8 @@
   "header": "Generatore di sovrapposizioni del Mese dell'Orgoglio",
   "data-input": "Input di file",
   "flag-selection": "Selezione bandiera",
+  "secondary-flag": "Bandiera secondaria (opzionale)",
+  "none": "Nessuna",
   "settings": "Impostazioni",
   "round": "Circolare",
   "quad": "Quadrato",

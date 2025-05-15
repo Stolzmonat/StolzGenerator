@@ -277,6 +277,5 @@ export const flagColours: FlagColours = {
   "Gruppe Abschiebung": ["Gruppe Abschiebung"],
   "Willkommen im Mainstream": ["Willkommen im Mainstream"],
   "Free Shlomo": ["Free Shlomo"],
-  "Czech Pride": ["Czech Pride"],
-  "FreeShlomo": ["FreeShlomo"]
+  "Czech Pride": ["Czech Pride"]
 }

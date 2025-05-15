@@ -2,6 +2,8 @@
   "header": "Stolzmonat Generator",
   "data-input": "Datei Eingabe",
   "flag-selection": "Flaggen Auswahl",
+  "secondary-flag": "Zweite Flagge (optional)",
+  "none": "Keine",
   "settings": "Einstellungen",
   "round": "Rund",
   "quad" :"Quadrat",

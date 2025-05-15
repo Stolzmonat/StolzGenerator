@@ -1,9 +1,13 @@
 <script lang="ts">
     import CustomSelectOption from "./CustomSelectOption.svelte";
     import { isTouch } from "./helpers/isTouch";
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let options: { icon?: string; label: string; value: string }[] | undefined = null;
     export let selected: string | undefined = options ? (options.length ? options[0].value : null) : null;
+    export let id: string = "select-" + Math.random().toString(36).substring(2, 9); // Unique ID for each select
 
     let hovering: boolean = false;
     let disablé: boolean = false;
@@ -41,12 +45,18 @@
             mouseOut();
         }
     }
+    
+    // Handle option selection
+    function updateSelected(value: string) {
+        selected = value;
+        dispatch('change', { value });
+    }
 </script>
 
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div
     class="select-sim"
-    id="select-color"
+    id={id}
     on:mouseover={mouseOver}
     on:mouseleave={mouseOut}
     style={"--amount-of-items:" + (options.length > 5 ? 5 : options.length)}
@@ -58,7 +68,14 @@
 >
     <div class="options" bind:this={optionsElement}>
         {#each options as option}
-            <CustomSelectOption {option} bind:group={selected} mainHovering={hovering} disabled={!(hovering && !disablé)} />
+            <CustomSelectOption 
+                {option} 
+                group={selected} 
+                mainHovering={hovering} 
+                disabled={!(hovering && !disablé)} 
+                on:select={(e) => updateSelected(e.detail.value)}
+                selectId={id}
+            />
         {/each}
     </div>
 </div>

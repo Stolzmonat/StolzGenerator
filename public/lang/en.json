@@ -2,6 +2,8 @@
   "header": "Pride Month Overlay Generator",
   "data-input": "File Input",
   "flag-selection": "Flag selection",
+  "secondary-flag": "Secondary flag (optional)",
+  "none": "None",
   "settings": "Settings",
   "round": "Circular",
   "quad": "Square",

@@ -30,7 +30,7 @@
 
   let selectedFiles: File[] = [];
   let selectedFlag: string = "German Pride";
-  let secondaryFlag: string = "German Classic Pride";
+  let secondaryFlag: string = "none";
   let cutoutSize: number = 80;
   let isGradient: boolean = false;
   let resizeInwards: boolean = true;
@@ -50,7 +50,7 @@
     cutoutSize: cutoutSize,
     resizeInwards: resizeInwards,
     selectedColors: flagColours[selectedFlag],
-    secondaryFlag: flagColours[secondaryFlag],
+    secondaryFlag: secondaryFlag === "none" ? [] : flagColours[secondaryFlag],
     isGradient: isGradient,
     isRotating: rotating,
     animationLength: animationLength,
@@ -104,6 +104,7 @@
     <section>
       <h2>{@html $_("flag-selection")}</h2>
       <CustomSelect
+        id="primary-flag-select"
         options={Object.keys(flagColours)
           .sort()
           .map((e) => ({
@@ -112,6 +113,24 @@
             icon: generateFlag(flagColours[e]),
           }))}
         bind:selected={selectedFlag}
+      />
+
+      <br/>
+      
+      <h3>{@html $_("secondary-flag")}</h3>
+      <CustomSelect
+        id="secondary-flag-select"
+        options={[
+          { label: $_("none"), value: "none", icon: "" },
+          ...Object.keys(flagColours)
+            .sort()
+            .map((e) => ({
+              label: capitalise(e),
+              value: e,
+              icon: generateFlag(flagColours[e]),
+            }))
+        ]}
+        bind:selected={secondaryFlag}
       />
 
       <section>

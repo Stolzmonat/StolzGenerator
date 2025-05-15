@@ -1,14 +1,31 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+    
+    const dispatch = createEventDispatcher();
+    
     export let option: { icon?: string; label: string; value: string };
     export let mainHovering: boolean = false;
     export let group: string;
     export let disabled: boolean = true;
+    export let selectId: string = "select-default"; // ID of the parent select
+
+    function handleSelect() {
+        dispatch('select', { value: option.value });
+    }
 </script>
 
 <div class="option" class:main-hovering={mainHovering}>
-    <input id={option.value} type="radio" name="color" value={option.value} bind:group {disabled} />
+    <input 
+        id={`${selectId}-${option.value}`} 
+        type="radio" 
+        name={`color-${selectId}`} 
+        value={option.value} 
+        checked={group === option.value}
+        on:change={handleSelect}
+        {disabled} 
+    />
     <label
-        for={option.value}
+        for={`${selectId}-${option.value}`}
         tabindex="0"
         role="option"
         on:keydown={e => {
@@ -17,7 +34,9 @@
             }
         }}
     >
-        <img src={option.icon} alt="" />
+        {#if option.icon}
+            <img src={option.icon} alt="" />
+        {/if}
         {option.label}
     </label>
 </div>

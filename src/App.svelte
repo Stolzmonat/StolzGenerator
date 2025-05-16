@@ -3,10 +3,12 @@
   import { theme } from "./services/theme";
 
   import { slide } from "svelte/transition";
+  import { onMount } from "svelte";
 
   import Dropzone from "./lib/Dropzone.svelte";
   import FileStats from "./lib/FileStats.svelte";
   import { flagColours } from "./lib/constants/flagColours";
+  import { flagThumbnails } from "./lib/constants/flagThumbnails";
   import CustomSelect from "./lib/CustomSelect.svelte";
   import Slider from "./lib/Slider.svelte";
   import Switch from "./lib/Switch.svelte";
@@ -27,6 +29,7 @@
   import Note from "./lib/Note.svelte";
   import { NoteType } from "./lib/types/noteTypes";
   import LocaleSelector from "./lib/LocaleSelector.svelte";
+  import { flagsInitialized } from "./lib/helpers/PngHelper";
 
   let selectedFiles: File[] = [];
   let selectedFlag: string = "German Pride";
@@ -41,6 +44,11 @@
   let overlayOpacity: number = 100;
   let cutoutType: CutoutType = CutoutType.CIRCLE;
   let overlayRotation: number = 0;
+  let isLoadingFlags: boolean = true;
+
+  // Optionen für Flaggenauswahl
+  let primaryFlagOptions = [];
+  let secondaryFlagOptions = [];
 
   let canvas: HTMLCanvasElement;
 
@@ -65,6 +73,50 @@
   $: if (!$isLocaleLoaded) {
     setupI18n({ withLocale: navigator.language.substring(0, 2) });
   }
+
+  // Erstellt die Optionen für die Flaggen-Dropdown-Menüs mit vorgenerierten Thumbnails
+  async function prepareFlagOptions() {
+    // Warten, bis die vorgeladenen Flaggen initialisiert sind
+    await flagsInitialized;
+
+    // Hilfsfunktion, um ein Thumbnail für eine Flagge zu erhalten
+    function getThumbnailForFlag(flagName: string): string {
+      // Prüfen, ob wir einen vorgenerierten Thumbnail haben
+      if (flagThumbnails[flagName]) {
+        return flagThumbnails[flagName];
+      }
+      // Fallback: Generiere das Thumbnail on-the-fly
+      return generateFlag(flagColours[flagName]);
+    }
+    
+    // Primäre Flaggenoptionen erstellen
+    primaryFlagOptions = Object.keys(flagColours)
+      .sort()
+      .map(flagName => ({
+        label: capitalise(flagName),
+        value: flagName,
+        icon: getThumbnailForFlag(flagName)
+      }));
+    
+    // Sekundäre Flaggenoptionen erstellen
+    secondaryFlagOptions = [
+      { label: $_("none"), value: "none", icon: "" }, // "None" hat kein Icon
+      ...Object.keys(flagColours)
+        .sort()
+        .map(flagName => ({
+          label: capitalise(flagName),
+          value: flagName,
+          icon: getThumbnailForFlag(flagName)
+        }))
+    ];
+    
+    isLoadingFlags = false;
+  }
+
+  onMount(() => {
+    // Vorbereiten der Flaggenoptionen
+    prepareFlagOptions();
+  });
 </script>
 
 <!-- <svelte:head>
@@ -103,35 +155,27 @@
 
     <section>
       <h2>{@html $_("flag-selection")}</h2>
-      <CustomSelect
-        id="primary-flag-select"
-        options={Object.keys(flagColours)
-          .sort()
-          .map((e) => ({
-            label: capitalise(e),
-            value: e,
-            icon: generateFlag(flagColours[e]),
-          }))}
-        bind:selected={selectedFlag}
-      />
+      {#if isLoadingFlags}
+        <div class="loading-flags">
+          <img src={loadingIcon} alt="Loading flags" class="spin-icon" />
+          <p>Loading flags...</p>
+        </div>
+      {:else}
+        <CustomSelect
+          id="primary-flag-select"
+          options={primaryFlagOptions}
+          bind:selected={selectedFlag}
+        />
 
-      <br/>
-      
-      <h3>{@html $_("secondary-flag")}</h3>
-      <CustomSelect
-        id="secondary-flag-select"
-        options={[
-          { label: $_("none"), value: "none", icon: "" },
-          ...Object.keys(flagColours)
-            .sort()
-            .map((e) => ({
-              label: capitalise(e),
-              value: e,
-              icon: generateFlag(flagColours[e]),
-            }))
-        ]}
-        bind:selected={secondaryFlag}
-      />
+        <br/>
+        
+        <h3>{@html $_("secondary-flag")}</h3>
+        <CustomSelect
+          id="secondary-flag-select"
+          options={secondaryFlagOptions}
+          bind:selected={secondaryFlag}
+        />
+      {/if}
 
       <section>
         <h2>{@html $_("settings")}</h2>
@@ -363,6 +407,28 @@
     width: 2rem;
     height: 2rem;
     margin-left: 0.5rem;
+  }
+  
+  .spin-icon {
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-flags {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+  }
+  
+  .loading-flags img {
+    width: 2rem;
+    height: 2rem;
   }
 
   .multiple-choices {

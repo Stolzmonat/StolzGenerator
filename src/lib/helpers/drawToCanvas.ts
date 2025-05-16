@@ -14,7 +14,7 @@ const flagKeys = Object.keys(flagColours);
 /**
     @param now - the amount of milliseconds elapsed in the animation
 */
-export function drawToCanvas(
+export async function drawToCanvas(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   selectedImage: HTMLImageElement,
@@ -24,7 +24,7 @@ export function drawToCanvas(
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (options.cutoutType != CutoutType.OVERLAY) {
-    drawFlag(canvas, ctx, options, now);
+    await drawFlag(canvas, ctx, options, now);
   }
 
   ctx.save();
@@ -76,11 +76,11 @@ export function drawToCanvas(
   ctx.restore();
 
   if (options.cutoutType == CutoutType.OVERLAY) {
-    drawFlag(canvas, ctx, options, now);
+    await drawFlag(canvas, ctx, options, now);
   }
 }
 
-function drawFlag(
+async function drawFlag(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   options: CanvasDrawOptions,
@@ -88,7 +88,7 @@ function drawFlag(
 ) {
   // If no secondary flag is selected, draw primary flag on the entire canvas
   if (!options.secondaryFlag || options.secondaryFlag.length === 0 || options.secondaryFlag[0] === undefined) {
-    drawSingleFlag(canvas, ctx, options.selectedColors, options, now, 1.0);
+    await drawSingleFlag(canvas, ctx, options.selectedColors, options, now, 1.0);
   } 
   // Otherwise draw primary and secondary flags on their respective halves
   else {
@@ -121,7 +121,7 @@ function drawFlag(
     ctx.beginPath();
     ctx.rect(0, 0, canvas.width / 2, canvas.height);
     ctx.clip();
-    drawFlagContent(canvas, ctx, options.selectedColors, options);
+    await drawFlagContent(canvas, ctx, options.selectedColors, options);
     ctx.restore();
     
     // Draw secondary flag on the right half
@@ -129,7 +129,7 @@ function drawFlag(
     ctx.beginPath();
     ctx.rect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
     ctx.clip();
-    drawFlagContent(canvas, ctx, options.secondaryFlag, options);
+    await drawFlagContent(canvas, ctx, options.secondaryFlag, options);
     ctx.restore();
     
     ctx.restore();
@@ -137,13 +137,13 @@ function drawFlag(
 }
 
 // Draw the flag content without applying rotation
-function drawFlagContent(
+async function drawFlagContent(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   flagColors: string[],
   options: CanvasDrawOptions
 ) {
-  if (flagColors[0]?.startsWith("./usa")) {
+  if (flagColors[0]?.startsWith("./american")) {
     drawUSAFlag(canvas, ctx);
   } else if (flagColors[0]?.startsWith("./unionjack")) {
     drawUnionjack(canvas, ctx);
@@ -152,7 +152,7 @@ function drawFlagContent(
   } else if (flagColors[0]?.startsWith("./chile")) {
     drawChileanFlag(canvas, ctx);
   } else if (flagKeys.includes(flagColors[0])) {
-    getPng(flagColors[0], canvas, ctx);
+    await getPng(flagColors[0], canvas, ctx);
   } else if (!options.isGradient) {
     if (flagColors[0] == "-") {
       for (let i = 1; i < flagColors.length; i++) {
@@ -237,7 +237,7 @@ function drawFlagContent(
 }
 
 // Keep the original drawSingleFlag function for when only one flag is shown
-function drawSingleFlag(
+async function drawSingleFlag(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   flagColors: string[],
@@ -268,7 +268,7 @@ function drawSingleFlag(
   // Apply the base opacity from options and then multiply by the flag-specific opacity
   ctx.globalAlpha = (options.overlayOpacity / 100) * opacity;
 
-  drawFlagContent(canvas, ctx, flagColors, options);
+  await drawFlagContent(canvas, ctx, flagColors, options);
 
   ctx.restore();
 }

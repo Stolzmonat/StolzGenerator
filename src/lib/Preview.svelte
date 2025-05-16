@@ -14,6 +14,7 @@
     let ctx: CanvasRenderingContext2D;
 
     let frame: number;
+    let isDrawing = false;
 
     $: {
         (async () => {
@@ -25,28 +26,10 @@
     }
 
     function fixRes() {
-        // let smallest = 0;
-        // smallest = selectedImage.naturalWidth;
-        // smallest =
-        //     selectedImage.naturalHeight < smallest
-        //         ? selectedImage.naturalHeight
-        //         : smallest;
-
-        // canvas.width = 100;
-        // canvas.height = 100;
-
-        // canvas.removeAttribute("width");
-        // canvas.removeAttribute("height");
-        // canvas.width = undefined;
-        // canvas.height = undefined;
-
         setTimeout(() => {
             canvas.width = canvas.getBoundingClientRect().width;
             canvas.height = canvas.getBoundingClientRect().height;
         }, 100);
-
-        // canvas.width = smallest;
-        // canvas.height = smallest;
     }
 
     onMount(() => {
@@ -57,10 +40,15 @@
         };
     });
 
-    function draw() {
+    async function draw() {
         let now = performance.now() / 1000;
         if (canvas && ctx) {
-            drawToCanvas(canvas, ctx, selectedImage, options, now);
+            // Prüfe, ob bereits ein Zeichenvorgang läuft
+            if (!isDrawing) {
+                isDrawing = true;
+                await drawToCanvas(canvas, ctx, selectedImage, options, now);
+                isDrawing = false;
+            }
         } else {
             canvas.width = canvas.getBoundingClientRect().width;
             canvas.height = canvas.getBoundingClientRect().height;

@@ -1,133 +1,141 @@
 import { assetToImage } from "./assetToImage";
 
-import br from "../../assets/flags/brazil.png";
+// Lazy-Loading für alle Flaggen
+const lazyFlags = {
+  "brazil": () => import("../../assets/flags/brazil.png"),
+  "canadian": () => import("../../assets/flags/canadian.png"),
+  "chilean": () => import("../../assets/flags/chilean.png"),
+  "thailand": () => import("../../assets/flags/thai.png"),
+  "swedish": () => import("../../assets/flags/swedish.png"),
+  "bavaria": () => import("../../assets/flags/bavaria.png"),
+  "swiss": () => import("../../assets/flags/swissPride.png"),
+  "danish": () => import("../../assets/flags/danish.png"),
+  "finnish": () => import("../../assets/flags/finnish.png"),
+  "island": () => import("../../assets/flags/island.png"),
+  "english": () => import("../../assets/flags/english.png"),
+  "scottish": () => import("../../assets/flags/scottish.png"),
+  "welsh": () => import("../../assets/flags/welsh.png"),
+  "australian": () => import("../../assets/flags/australian.png"),
+  "new zealand": () => import("../../assets/flags/newzealand.png"),
+  "bosnian": () => import("../../assets/flags/bosnian.png"),
+  "jamaican": () => import("../../assets/flags/jamaican.png"),
+  "turkish": () => import("../../assets/flags/turkish.png"),
+  "south africa": () => import("../../assets/flags/southafrica.png"),
+  "malta": () => import("../../assets/flags/malta.png"),
+  "japan": () => import("../../assets/flags/japan.png"),
+  "team remigration (blue)": () => import("../../assets/flags/remigrationb.png"),
+  "team remigration (white)": () => import("../../assets/flags/remigrationw.png"),
+  "gruppe abschiebung": () => import("../../assets/flags/abschiebung.png"),
+  "willkommen im mainstream": () => import("../../assets/flags/mainstream.png"),
+  "free shlomo": () => import("../../assets/flags/free_shlomo.png"),
+  "czech": () => import("../../assets/flags/czech.png"),
+  "uk": () => import("../../assets/flags/uk.png"),
+};
 
-import ca from "../../assets/flags/canada.png";
+// Cache der geladenen Flaggenbilder
+const imageCache: { [key: string]: HTMLImageElement } = {};
 
-import th from "../../assets/flags/thai.png";
-
-import sw from "../../assets/flags/sweden.png";
-
-import boarisch from "../../assets/flags/bavaria.png";
-
-import swis from "../../assets/flags/swissPride.png";
-
-import denmark from "../../assets/flags/denmark.png";
-
-import finnish from "../../assets/flags/finland.png";
-
-import ice from "../../assets/flags/island.png";
-
-import english from "../../assets/flags/english.png";
-
-import scottish from "../../assets/flags/scottland.png";
-
-import welsh from "../../assets/flags/welsh.png";
-
-import FlippedSchluchtenScheißer from "../../assets/flags/upsidedown_austria.png";
-
-import newzealandish from "../../assets/flags/newzealand.png";
-
-import bosnish from "../../assets/flags/bosnien.png";
-
-import jamaican from "../../assets/flags/jamaika.png";
-
-import turkish from "../../assets/flags/turkish.png";
-
-import southafrican from "../../assets/flags/southafrica.png";
-
-import maltese from "../../assets/flags/malta.png";
-
-import japanese from "../../assets/flags/japan.png";
-
-import remigrationb from "../../assets/flags/remigrationb.png";
-
-import remigrationw from "../../assets/flags/remigrationw.png";
-
-import abschiebung from "../../assets/flags/abschiebung.png";
-
-import mainstream_png from "../../assets/flags/mainstream.png";
-
-import shlomo_png from "../../assets/flags/free_shlomo.png";
-
-import czechish from "../../assets/flags/czech.png";
-
-
-const canada = await assetToImage(ca);
-const brazil = await assetToImage(br);
-const bavaria = await assetToImage(boarisch);
-const thai = await assetToImage(th);
-const sweden = await assetToImage(sw);
-const swiss = await assetToImage(swis);
-const denish = await assetToImage(denmark);
-const finland = await assetToImage(finnish);
-const iceland = await assetToImage(ice);
-const england = await assetToImage(english);
-const scottland = await assetToImage(scottish);
-const wales = await assetToImage(welsh);
-const aussi = await assetToImage(FlippedSchluchtenScheißer);
-const newzealand = await assetToImage(newzealandish);
-const bosnia = await assetToImage(bosnish);
-const jamaica = await assetToImage(jamaican);
-const turkey = await assetToImage(turkish);
-const southafrica = await assetToImage(southafrican);
-const malta = await assetToImage(maltese);
-const japan = await assetToImage(japanese);
-const teamrb = await assetToImage(remigrationb);
-const teamrw = await assetToImage(remigrationw);
-const grabsch = await assetToImage(abschiebung);
-const czech = await assetToImage(czechish);
-const mainstream = await assetToImage(mainstream_png);
-const shlomo = await assetToImage(shlomo_png);
-
-export function getPng(discriminator: string, canvas: any, ctx: any) {
+// Vorab einige wichtige Flaggen laden, um UX zu verbessern
+// Dies löst das Problem mit dem ewigen Ladeindikator
+async function initFlags() {
   try {
-    const flagMap: {[key: string]: HTMLImageElement} = {
-      "brazil": brazil,
-      "canadian": canada,
-      "thailand": thai,
-      "swedish": sweden,
-      "bavaria": bavaria,
-      "swiss": swiss,
-      "danish": denish,
-      "finnish": finland,
-      "iceland": iceland,
-      "english": england,
-      "scottish": scottland,
-      "welsh": wales,
-      "australia": aussi,
-      "new zealand": newzealand,
-      "bosnia": bosnia,
-      "jamaica": jamaica,
-      "turkish": turkey,
-      "south africa": southafrica,
-      "maltese": malta,
-      "japan": japan,
-      "team remigration (blue)": teamrb,
-      "team remigration (white)": teamrw,
-      "gruppe abschiebung": grabsch,
-      "willkommen im mainstream": mainstream,
-      "free shlomo": shlomo,
-      "czech" : czech
-    };
+    // Laden der am häufigsten verwendeten Flaggen im Hintergrund
+    // Dies stellt sicher, dass die Flaggen-Initialisierung als abgeschlossen gilt
+    const commonFlags = ["uk", "brazil", "canadian"];
+    await Promise.all(
+      commonFlags.map(async (flag) => {
+        try {
+          if (flag in lazyFlags) {
+            await getFlag(flag);
+          }
+        } catch (err) {
+          console.warn(`Fehler beim Vorladen der Flagge ${flag}:`, err);
+          // Fehler unterdrücken, damit die Initialisierung nicht fehlschlägt
+        }
+      })
+    );
+    return true;
+  } catch (error) {
+    console.error("Fehler bei der Flag-Initialisierung:", error);
+    // Trotz Fehler true zurückgeben, damit die Anwendung nicht blockiert wird
+    return true;
+  }
+}
 
+// Flag initialisieren - Promise wird resolved, wenn das Flag-System bereit ist
+export const flagsInitialized = initFlags();
+
+/**
+ * Lädt eine Flagge und gibt das Bild zurück
+ */
+async function getFlag(key: string): Promise<HTMLImageElement> {
+  // Wenn bereits im Cache, sofort zurückgeben
+  if (imageCache[key]) {
+    return imageCache[key];
+  }
+  
+  // Lazy laden
+  if (key in lazyFlags) {
+    try {
+      const importedFlag = await lazyFlags[key]();
+      const flagImage = await assetToImage(importedFlag.default);
+      imageCache[key] = flagImage;
+      return flagImage;
+    } catch (error) {
+      console.error(`Error loading flag image: ${key}`, error);
+      throw error;
+    }
+  }
+  
+  throw new Error(`Flag not found: ${key}`);
+}
+
+/**
+ * Zeichnet eine Flagge auf den Canvas
+ */
+export async function getPng(discriminator: string, canvas: any, ctx: any) {
+  try {
     const disc = discriminator.toLowerCase();
-    let flag = null;
+    let flagKey = null;
 
-    for (const key in flagMap) {
+    // Suche nach dem passenden Flaggenschlüssel
+    for (const key in lazyFlags) {
       if (disc.startsWith(key)) {
-        flag = flagMap[key];
+        flagKey = key;
         break;
       }
     }
 
-    if (flag) {
-      ctx.drawImage(flag, 0, 0, canvas.width, canvas.height);
-    } else {
-      // Handle default case or throw an error
+    if (flagKey) {
+      const flagImage = await getFlag(flagKey);
+      ctx.drawImage(flagImage, 0, 0, canvas.width, canvas.height);
     }
   } catch (e) {
-    // Handle or log the error
+    console.error("Error in getPng:", e);
+  }
+}
+
+/**
+ * Gibt ein Bild-Objekt für eine Flagge zurück (für Vorschaubilder)
+ */
+export async function getFlagThumbnail(flagName: string): Promise<HTMLImageElement | null> {
+  try {
+    let flagKey = null;
+    
+    for (const key in lazyFlags) {
+      if (flagName.toLowerCase().startsWith(key)) {
+        flagKey = key;
+        break;
+      }
+    }
+    
+    if (flagKey) {
+      return await getFlag(flagKey);
+    }
+    return null;
+  } catch (e) {
+    console.error(`Error getting flag thumbnail for ${flagName}:`, e);
+    return null;
   }
 }
 

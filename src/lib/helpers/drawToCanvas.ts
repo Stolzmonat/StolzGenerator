@@ -10,7 +10,7 @@ import { drawChileanFlag } from "../drawFlags/drawChileanFlag";
 import { getPng } from "./PngHelper";
 
 const flagKeys = Object.keys(flagColours);
-// console.log(flagKeys);
+
 /**
     @param now - the amount of milliseconds elapsed in the animation
 */
@@ -53,24 +53,78 @@ export async function drawToCanvas(
     ctx.clip();
   }
 
+  // Zeichne das Bild, wenn es vorhanden ist
   if (selectedImage && isImageOk(selectedImage)) {
+    const offsetX = options.imageOffsetX || 0;
+    const offsetY = options.imageOffsetY || 0;
+    const scale = (options.imageScale || 100) / 100;
+    
+    // Zentrum des Canvas
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // Speichere den aktuellen Canvas-Status
+    ctx.save();
+    
+    // Verschiebe den Ursprung in die Mitte des Canvas
+    ctx.translate(centerX + offsetX, centerY + offsetY);
+    
+    // Skaliere das Bild vom Mittelpunkt aus
+    ctx.scale(scale, scale);
+    
+    // Berechne die Größe basierend auf dem Ausschnitt und Seitenverhältnis
+    const aspectRatio = selectedImage.width / selectedImage.height;
+    let width, height;
+    
+    if (options.cutoutType === CutoutType.OVERLAY) {
+      // Bei Overlay, berechne basierend auf Canvas-Größe
+      if (aspectRatio >= 1) {
+        // Breiteres Bild
+        width = canvas.width;
+        height = width / aspectRatio;
+      } else {
+        // Höheres Bild
+        height = canvas.height;
+        width = height * aspectRatio;
+      }
+    } else {
+      // Bei Ausschnitt (Kreis/Quadrat)
+      const cutoutSize = options.cutoutType === CutoutType.CIRCLE 
+        ? ((canvas.width / 2) * options.cutoutSize) / 100 * 2 // Durchmesser
+        : canvas.width * (options.cutoutSize / 100);
+      
+      if (options.resizeInwards) {
+        if (aspectRatio >= 1) {
+          // Breiteres Bild
+          height = cutoutSize;
+          width = height * aspectRatio;
+        } else {
+          // Höheres Bild
+          width = cutoutSize;
+          height = width / aspectRatio;
+        }
+      } else {
+        // Fülle den Ausschnitt aus
+        const minScale = Math.max(
+          cutoutSize / selectedImage.width,
+          cutoutSize / selectedImage.height
+        );
+        width = selectedImage.width * minScale;
+        height = selectedImage.height * minScale;
+      }
+    }
+    
+    // Zeichne das Bild zentriert
     ctx.drawImage(
       selectedImage,
-      options.resizeInwards
-        ? (canvas.width * (1 - options.cutoutSize / 100)) / 2
-        : 0,
-      options.resizeInwards
-        ? (canvas.height * (1 - options.cutoutSize / 100)) / 2
-        : 0,
-      canvas.width -
-        (options.resizeInwards
-          ? canvas.width * (1 - options.cutoutSize / 100)
-          : 0),
-      canvas.height -
-        (options.resizeInwards
-          ? canvas.height * (1 - options.cutoutSize / 100)
-          : 0)
+      -width / 2,
+      -height / 2,
+      width,
+      height
     );
+    
+    // Stelle den Canvas-Status wieder her
+    ctx.restore();
   }
 
   ctx.restore();

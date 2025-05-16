@@ -12,4 +12,7 @@ export type CanvasDrawOptions = {
   overlayOpacity: number;
   cutoutType: CutoutType;
   rotationOffset: number;
+  imageScale?: number;     // Skalierungsfaktor des Bildes in Prozent
+  imageOffsetX?: number;   // Horizontale Verschiebung des Bildes
+  imageOffsetY?: number;   // Vertikale Verschiebung des Bildes
 };

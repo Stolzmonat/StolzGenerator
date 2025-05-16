@@ -2,6 +2,10 @@ import type { CanvasDrawOptions } from "../types/canvasDrawOptions";
 import { drawToCanvas } from "./drawToCanvas";
 import { fileToImage } from "./fileToImage";
 import * as gifshot from "gifshot";
+import { ImagePositionStore } from "./ImagePositionStore";
+
+// Referenzgröße der Vorschau-Canvas (standardmäßig auf dem Bildschirm)
+const PREVIEW_CANVAS_SIZE = 320; // Die typische Größe des Vorschau-Canvas
 
 export function download(
   selectedFile: File,
@@ -26,23 +30,84 @@ export function download(
       return reject(new Error("Unable to get canvas context"));
     }
 
+    // Standard-Canvasgröße für die Vorschau (1:1 Seitenverhältnis)
+    const defaultSize = 512;
+    canvas.width = defaultSize;
+    canvas.height = defaultSize;
+
+    // Falls ein Bild ausgewählt wurde, aber die Originalgröße beibehalten,
+    // anstatt immer das Maximum zu nehmen
     if (selectedFile && selectedImage) {
-      canvas.width = selectedImage.width;
-      canvas.height = selectedImage.height;
-    } else {
-      canvas.width = 512;
-      canvas.height = 512;
+      // Wähle eine vernünftige Größe für das Ausgabebild
+      const maxSize = 1024; // Maximale Canvasgröße in Pixeln
+
+      // Wenn das Originalbild zu groß ist, skaliere es herunter
+      if (selectedImage.width > maxSize || selectedImage.height > maxSize) {
+        const scale = Math.min(
+          maxSize / selectedImage.width,
+          maxSize / selectedImage.height
+        );
+        canvas.width = Math.round(selectedImage.width * scale);
+        canvas.height = Math.round(selectedImage.height * scale);
+      } else {
+        // Bei kleinen Bildern verwende die Originalgröße, aber mindestens defaultSize
+        canvas.width = Math.max(selectedImage.width, defaultSize);
+        canvas.height = Math.max(selectedImage.height, defaultSize);
+      }
     }
+
+    // Aktualisiere die Optionen mit den Werten aus dem ImagePositionStore
+    const imageStore = ImagePositionStore.getInstance();
+    const imageState = imageStore.getState();
+    
+    // Berechne das Verhältnis zwischen Export-Canvas und Vorschau-Canvas
+    const scaleFactor = canvas.width / PREVIEW_CANVAS_SIZE;
+    
+    // Skaliere die Offset- und Skalierungswerte proportional zur Größenänderung
+    options = {
+      ...options,
+      imageOffsetX: imageState.offsetX * scaleFactor,
+      imageOffsetY: imageState.offsetY * scaleFactor,
+      imageScale: imageState.scale
+    };
 
     if (options.isRotating && selectedImage) {
       const fps = 30;
       const frameCount = fps * options.animationLength;
 
-      canvas.width = Math.min(canvas.width, 256);
-      canvas.height = Math.min(canvas.height, 256);
+      // Bei Animationen die Größe reduzieren, aber nicht unter 256 Pixel
+      const maxSize = 256;
+      const minSize = 256;
+
+      if (canvas.width > maxSize || canvas.height > maxSize) {
+        const scale = Math.min(
+          maxSize / canvas.width,
+          maxSize / canvas.height
+        );
+        canvas.width = Math.max(Math.round(canvas.width * scale), minSize);
+        canvas.height = Math.max(Math.round(canvas.height * scale), minSize);
+        
+        // Nach Größenänderung nochmals die Offsets anpassen
+        const additionalScaleFactor = canvas.width / defaultSize;
+        options.imageOffsetX = options.imageOffsetX * additionalScaleFactor;
+        options.imageOffsetY = options.imageOffsetY * additionalScaleFactor;
+      } else if (canvas.width < minSize || canvas.height < minSize) {
+        // Stelle sicher, dass die Größe nicht zu klein ist
+        const scale = Math.max(
+          minSize / canvas.width,
+          minSize / canvas.height
+        );
+        canvas.width = Math.round(canvas.width * scale);
+        canvas.height = Math.round(canvas.height * scale);
+        
+        // Nach Größenänderung nochmals die Offsets anpassen
+        const additionalScaleFactor = canvas.width / defaultSize;
+        options.imageOffsetX = options.imageOffsetX * additionalScaleFactor;
+        options.imageOffsetY = options.imageOffsetY * additionalScaleFactor;
+      }
 
       for (let i = 0; i < frameCount; i++) {
-        drawToCanvas(canvas, ctx, selectedImage, options, i / fps);
+        await drawToCanvas(canvas, ctx, selectedImage, options, i / fps);
         frames.push(canvas.toDataURL());
       }
 
@@ -57,11 +122,11 @@ export function download(
           sampleInterval: 10, // Increase the sample interval for better quality
           saveRenderingContexts: true, // Save rendering contexts for better quality
         },
-        (obj: { error: boolean, image: string }) => {
+        (obj: { error: boolean; image: string }) => {
           if (!obj.error) {
             const image: string = obj.image;
             const link: HTMLAnchorElement = document.createElement("a");
-            link.download = "lpppog_ani" + Date.now() + ".gif";
+            link.download = "stolz_overlay_anim_" + Date.now() + ".gif";
             link.href = image;
             link.click();
             resolve();
@@ -71,12 +136,17 @@ export function download(
         }
       );
     } else {
+      // Statisches PNG erstellen
       if (selectedImage) {
-        drawToCanvas(canvas, ctx, selectedImage, options, 0);
+        // Hier await hinzufügen, um sicherzustellen, dass die Zeichnung abgeschlossen ist
+        await drawToCanvas(canvas, ctx, selectedImage, options, 0);
+      } else {
+        // Falls kein Bild ausgewählt wurde, nur die Flagge zeichnen
+        await drawToCanvas(canvas, ctx, null, options, 0);
       }
 
       const link = document.createElement("a");
-      link.download = "lpppog" + Date.now() + ".png";
+      link.download = "stolz_overlay_" + Date.now() + ".png";
       link.href = canvas.toDataURL("image/png");
       link.click();
 

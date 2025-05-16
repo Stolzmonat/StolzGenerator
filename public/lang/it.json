@@ -20,6 +20,8 @@
   "counter-clock": "In senso antiorario",
   "preview": "Anteprima",
   "circular-preview": "Anteprima circolare",
+  "image-scale": "Regola dimensioni immagine",
+  "drag-image": "Trascina l'immagine per spostarla",
   "export": "Esportazione",
   "note-png": "Nota: non è stato selezionato alcun file di input. È comunque possibile esportare questa bandiera",
   "note-gif": "Nota: l'elaborazione delle GIF animate richiede molto tempo! (soprattutto se si utilizza un dispositivo mobile)",

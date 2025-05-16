@@ -20,6 +20,8 @@
   "counter-clock": "Gegen den Uhrzeigersinn",
   "preview": "Vorschau",
   "circular-preview": "Kreisförmige Vorschau",
+  "image-scale": "Bildgröße anpassen",
+  "drag-image": "Bild zum Verschieben ziehen",
   "export": "Export",
   "note-png": "Hinweis: Es ist keine Eingabedatei ausgewählt. Sie können diese Markierung aber trotzdem exportieren.",
   "note-gif": "Hinweis: Die Verarbeitung von animierten GIFs dauert ziemlich lange! (besonders wenn Sie ein mobiles Gerät benutzen)",

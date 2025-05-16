@@ -20,6 +20,8 @@
   "counter-clock": "Sens inverse des aiguilles d'une montre",
   "preview": "Aperçu",
   "circular-preview": "Aperçu circulaire",
+  "image-scale": "Ajuster la taille de l'image",
+  "drag-image": "Faites glisser l'image pour la déplacer",
   "export": "Exporter",
   "note-png": "Note : Il n'y a pas de fichier d'entrée sélectionné. Vous pouvez néanmoins exporter ce drapeau",
   "note-gif": "Note : Les GIFs animés sont assez longs à traiter ! (surtout si vous êtes sur un appareil mobile)",

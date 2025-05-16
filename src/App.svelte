@@ -45,6 +45,11 @@
   let cutoutType: CutoutType = CutoutType.CIRCLE;
   let overlayRotation: number = 0;
   let isLoadingFlags: boolean = true;
+  
+  // Neue Variablen für die Bildmanipulation
+  let imageScale: number = 100;  // Skalierung in Prozent
+  let imageOffsetX: number = 0;  // X-Position des Bildes
+  let imageOffsetY: number = 0;  // Y-Position des Bildes
 
   // Optionen für Flaggenauswahl
   let primaryFlagOptions = [];
@@ -66,6 +71,9 @@
     overlayOpacity: overlayOpacity,
     cutoutType: cutoutType,
     rotationOffset: overlayRotation,
+    imageScale: imageScale,      // Neue Option für Bildskalierung
+    imageOffsetX: imageOffsetX,  // Neue Option für X-Position
+    imageOffsetY: imageOffsetY,  // Neue Option für Y-Position
   };
 
   let isRendering: boolean = false;
@@ -240,6 +248,14 @@
           {previewCircular}
           bind:canvas
         />
+        
+        {#if selectedFiles.length > 0}
+          <div class="image-controls">
+            <p>{@html $_("image-scale")}</p>
+            <Slider bind:value={imageScale} min={50} max={200} step={1} />
+          </div>
+        {/if}
+        
         <br /><br />
         <Switch bind:checked={previewCircular}
           >{@html $_("circular-preview")}</Switch
@@ -435,6 +451,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 3rem;
+  }
+
+  .image-controls {
+    margin-top: 2rem;
   }
 
   @media screen and (max-width: 80rem) {

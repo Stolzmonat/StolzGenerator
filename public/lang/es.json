@@ -20,6 +20,8 @@
   "counter-clock": "En sentido contrario a las agujas del reloj",
   "preview": "Vista previa",
   "circular-preview": "Vista previa circular",
+  "image-scale": "Ajustar tamaño de imagen",
+  "drag-image": "Arrastrar imagen para mover",
   "export": "Exportar",
   "note-png": "Nota: No hay ningún archivo de entrada seleccionado. Sin embargo, puede exportar esta bandera",
   "note-gif": "Nota: ¡Los GIF animados tardan bastante en procesarse! (especialmente si se encuentra en un dispositivo móvil)",

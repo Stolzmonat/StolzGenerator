@@ -5,13 +5,13 @@ const lazyFlags = {
   "brazil": () => import("../../assets/flags/brazil.png"),
   "canadian": () => import("../../assets/flags/canadian.png"),
   "chilean": () => import("../../assets/flags/chilean.png"),
-  "thailand": () => import("../../assets/flags/thai.png"),
+  "thai": () => import("../../assets/flags/thai.png"),
   "swedish": () => import("../../assets/flags/swedish.png"),
   "bavaria": () => import("../../assets/flags/bavaria.png"),
   "swiss": () => import("../../assets/flags/swissPride.png"),
   "danish": () => import("../../assets/flags/danish.png"),
   "finnish": () => import("../../assets/flags/finnish.png"),
-  "island": () => import("../../assets/flags/island.png"),
+  "iceland": () => import("../../assets/flags/icelandic.png"),
   "english": () => import("../../assets/flags/english.png"),
   "scottish": () => import("../../assets/flags/scottish.png"),
   "welsh": () => import("../../assets/flags/welsh.png"),
@@ -21,7 +21,7 @@ const lazyFlags = {
   "jamaican": () => import("../../assets/flags/jamaican.png"),
   "turkish": () => import("../../assets/flags/turkish.png"),
   "south africa": () => import("../../assets/flags/southafrica.png"),
-  "malta": () => import("../../assets/flags/malta.png"),
+  "malta": () => import("../../assets/flags/maltese.png"),
   "japan": () => import("../../assets/flags/japan.png"),
   "team remigration (blue)": () => import("../../assets/flags/remigrationb.png"),
   "team remigration (white)": () => import("../../assets/flags/remigrationw.png"),
@@ -29,7 +29,7 @@ const lazyFlags = {
   "willkommen im mainstream": () => import("../../assets/flags/mainstream.png"),
   "free shlomo": () => import("../../assets/flags/free_shlomo.png"),
   "czech": () => import("../../assets/flags/czech.png"),
-  "uk": () => import("../../assets/flags/uk.png"),
+  "british": () => import("../../assets/flags/british.png"),
 };
 
 // Cache der geladenen Flaggenbilder

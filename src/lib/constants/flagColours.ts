@@ -74,7 +74,7 @@ export const flagColours: FlagColours = {
     "#ff873e",
     "#ff6f00",
   ],
-  "Argentine Pride": [
+  "Argentinian Pride": [
     "#3f91e7",
     "#75afe1",
     "#ffffff",
@@ -182,7 +182,7 @@ export const flagColours: FlagColours = {
     "#95DAF9",
     "#FFFFFF",
   ],
-  "Slowakian Pride": [
+  "Slovakian Pride": [
     "#ffffff",
     "#8dffff",
     "#688fee",
@@ -190,7 +190,7 @@ export const flagColours: FlagColours = {
     "#e51f80",
     "#ee1a26",
   ],
-  "Slowenian Pride": [
+  "Slovenian Pride": [
     "#ffffff",
     "#8dffff",
     "#005cfd",
@@ -223,7 +223,7 @@ export const flagColours: FlagColours = {
     "#aae1fa",
     "#00a1de",
   ],
-  "Liechtenstein  Pride": [
+  "Liechtenstein Pride": [
     "#002b7f",
     "#4958b4",
     "#8189ed",
@@ -248,19 +248,19 @@ export const flagColours: FlagColours = {
     "#128807",
     "#126607",
   ],
-  "Lativan Pride": ["#8d080d", "#9d2f32", "#ffffff", "#9d2f32", "#8d080d"],
+  "Latvian Pride": ["#8d080d", "#9d2f32", "#ffffff", "#9d2f32", "#8d080d"],
   "American Pride": ["./american"],
-  "UK Pride": ["UK Pride"],
-  "Greece Pride": ["./greece"],
+  "British Pride": ["British Pride"],
+  "Greek Pride": ["./greece"],
   "Chilean Pride": ["./chile"],
   "Canadian Pride": ["Canadian Pride"],
   "Bavarian Pride": ["Bavarian Pride"],
   "Brazilian Pride": ["Brazilian Pride"],
-  "Thailand Pride": ["Thailand Pride"],
+  "Thai Pride": ["Thai Pride"],
   "Swedish Pride": ["Swedish Pride"],
   "Danish Pride": ["Danish Pride"],
   "Finnish Pride": ["Finnish Pride"],
-  "Islandic Pride": ["Islandic Pride"],
+  "Icelandic Pride": ["Icelandic Pride"],
   "English Pride": ["English Pride"],
   "Scottish Pride": ["Scottish Pride"],
   "Welsh Pride": ["Welsh Pride"],
@@ -270,7 +270,7 @@ export const flagColours: FlagColours = {
   "Jamaican Pride": ["Jamaican Pride"],
   "Turkish Pride": ["Turkish Pride"],
   "South African Pride": ["South African Pride"],
-  "Malta Pride": ["Malta Pride"],
+  "Maltese Pride": ["Malta Pride"],
   "Japanese Pride": ["Japanese Pride"],
   "Team Remigration (blue)": ["Team Remigration (blue)"],
   "Team Remigration (white)": ["Team Remigration (white)"],

@@ -13,6 +13,7 @@
   import Slider from "./lib/Slider.svelte";
   import Switch from "./lib/Switch.svelte";
   import ThemeSwitcher from "./lib/ThemeSwitcher.svelte";
+  import InfoBanner from "./lib/InfoBanner.svelte";
 
   import gradientIcon from "./assets/gradient.svg";
   import loadingIcon from "./assets/loading.svg";
@@ -147,6 +148,8 @@
 
 <main class={$theme}>
   {#if $isLocaleLoaded}
+    <InfoBanner />
+    
     <header>
       <h1>{@html $_("header")}</h1>
     </header>

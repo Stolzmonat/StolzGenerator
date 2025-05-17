@@ -21,6 +21,7 @@
   "preview": "Vorschau",
   "circular-preview": "Kreisförmige Vorschau",
   "image-scale": "Bildgröße anpassen",
+  "aspect-ratio": "Seitenverhältnis anpassen",
   "drag-image": "Bild zum Verschieben ziehen",
   "export": "Export",
   "note-png": "Hinweis: Es ist keine Eingabedatei ausgewählt. Sie können diese Markierung aber trotzdem exportieren.",

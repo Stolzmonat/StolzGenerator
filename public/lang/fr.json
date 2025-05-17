@@ -21,6 +21,7 @@
   "preview": "Aperçu",
   "circular-preview": "Aperçu circulaire",
   "image-scale": "Ajuster la taille de l'image",
+  "aspect-ratio": "Ajuster les proportions",
   "drag-image": "Faites glisser l'image pour la déplacer",
   "export": "Exporter",
   "note-png": "Note : Il n'y a pas de fichier d'entrée sélectionné. Vous pouvez néanmoins exporter ce drapeau",

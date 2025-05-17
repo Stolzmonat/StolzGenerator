@@ -68,7 +68,8 @@ export function download(
       ...options,
       imageOffsetX: imageState.offsetX * scaleFactor,
       imageOffsetY: imageState.offsetY * scaleFactor,
-      imageScale: imageState.scale
+      imageScale: imageState.scale,
+      aspectRatioScale: imageState.aspectRatioScale
     };
 
     if (options.isRotating && selectedImage) {

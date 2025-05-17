@@ -1,10 +1,11 @@
 <script lang="ts">
     export let checked = false;
+    export let disabled = false;
 
     let isHovering = false;
 
     function element_mouseEnter() {
-        isHovering = true;
+        if (!disabled) isHovering = true;
     }
     function element_mouseLeave() {
         isHovering = false;
@@ -12,16 +13,18 @@
 </script>
 
 <label
-    tabindex="0"
+    tabindex={disabled ? "-1" : "0"}
     on:keydown={event => {
-        if (event.key == "Enter") event.currentTarget.click();
+        if (!disabled && event.key == "Enter") event.currentTarget.click();
     }}
     role="checkbox"
+    aria-disabled={disabled}
     on:mouseenter={element_mouseEnter}
     on:mouseleave={element_mouseLeave}
     class:hover={isHovering}
+    class:disabled={disabled}
 >
-    <input type="checkbox" bind:checked />
+    <input type="checkbox" bind:checked {disabled} />
     <span class="check-ind"><span class="check-ind-k" /></span>
     <p><slot /></p>
 </label>
@@ -70,5 +73,17 @@
     }
     label.hover span.check-ind-k {
         background-color: hsl(0, 0%, 95%);
+    }
+    label.disabled {
+        pointer-events: none;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    label.disabled span.check-ind {
+        background-color: var(--select-color);
+        border-color: var(--ridge-color);
+    }
+    label.disabled p {
+        color: var(--disabled-color);
     }
 </style>

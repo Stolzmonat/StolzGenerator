@@ -21,6 +21,7 @@
   "preview": "Anteprima",
   "circular-preview": "Anteprima circolare",
   "image-scale": "Regola dimensioni immagine",
+  "aspect-ratio": "Regola proporzioni",
   "drag-image": "Trascina l'immagine per spostarla",
   "export": "Esportazione",
   "note-png": "Nota: non è stato selezionato alcun file di input. È comunque possibile esportare questa bandiera",

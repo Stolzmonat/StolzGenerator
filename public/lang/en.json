@@ -21,6 +21,7 @@
   "preview": "Preview",
   "circular-preview": "Circular preview",
   "image-scale": "Adjust image size",
+  "aspect-ratio": "Adjust aspect ratio",
   "drag-image": "Drag image to move",
   "export": "Export",
   "note-png": "Note: There is no input file selected. However, you can still export this flag.",

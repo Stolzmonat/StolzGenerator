@@ -15,7 +15,6 @@
   import ThemeSwitcher from "./lib/ThemeSwitcher.svelte";
 
   import gradientIcon from "./assets/gradient.svg";
-  import resizeInwardsIcon from "./assets/resizeInwards.svg";
   import loadingIcon from "./assets/loading.svg";
   import rotatingIcon from "./assets/rotating.svg";
   import Preview from "./lib/Preview.svelte";
@@ -36,7 +35,6 @@
   let secondaryFlag: string = "none";
   let cutoutSize: number = 80;
   let isGradient: boolean = false;
-  let resizeInwards: boolean = true;
   let rotating: boolean = false;
   let animationLength: number = 10;
   let previewCircular: boolean = true;
@@ -50,6 +48,7 @@
   let imageScale: number = 100;  // Skalierung in Prozent
   let imageOffsetX: number = 0;  // X-Position des Bildes
   let imageOffsetY: number = 0;  // Y-Position des Bildes
+  let aspectRatioScale: number = 1; // Seitenverhältnis-Anpassung (1 = Original)
 
   // Optionen für Flaggenauswahl
   let primaryFlagOptions = [];
@@ -58,10 +57,20 @@
   let canvas: HTMLCanvasElement;
 
   $: animated = rotating;
+  
+  // Hilfsfunktion, die prüft, ob eine bestimmte Flagge Gradienten unterstützen kann
+  $: canFlagSupportGradient = (flagName: string) => {
+    const flag = flagColours[flagName];
+    return Array.isArray(flag) && flag.length > 1 && flag[0] !== flag;
+  };
+  
+  // Prüft, ob die ausgewählte Flagge oder sekundäre Flagge einen Gradienten unterstützen kann
+  $: canSupportGradient = 
+    canFlagSupportGradient(selectedFlag) || 
+    (secondaryFlag !== "none" && canFlagSupportGradient(secondaryFlag));
 
   $: renderOptions = {
     cutoutSize: cutoutSize,
-    resizeInwards: resizeInwards,
     selectedColors: flagColours[selectedFlag],
     secondaryFlag: secondaryFlag === "none" ? [] : flagColours[secondaryFlag],
     isGradient: isGradient,
@@ -74,6 +83,7 @@
     imageScale: imageScale,      // Neue Option für Bildskalierung
     imageOffsetX: imageOffsetX,  // Neue Option für X-Position
     imageOffsetY: imageOffsetY,  // Neue Option für Y-Position
+    aspectRatioScale: aspectRatioScale  // Neue Option für Seitenverhältnis-Anpassung
   };
 
   let isRendering: boolean = false;
@@ -207,16 +217,9 @@
         <br />
         <h3>{@html $_("type-of-representation")}</h3>
         <div class="multiple-choices">
-          <Switch bind:checked={isGradient}
+          <Switch bind:checked={isGradient} disabled={!canSupportGradient}
             >{@html $_("gradient")}
             <img alt="" src={gradientIcon} class="icon" /></Switch
-          >
-          <Switch bind:checked={resizeInwards}
-            >{@html $_("size-inward")}<img
-              alt=""
-              src={resizeInwardsIcon}
-              class="icon"
-            /></Switch
           >
           <Switch bind:checked={rotating}
             >{@html $_("animated")}<img
@@ -253,6 +256,9 @@
           <div class="image-controls">
             <p>{@html $_("image-scale")}</p>
             <Slider bind:value={imageScale} min={50} max={200} step={1} />
+            
+            <p>{@html $_("aspect-ratio")}</p>
+            <Slider bind:value={aspectRatioScale} min={0.5} max={2} step={0.05} />
           </div>
         {/if}
         

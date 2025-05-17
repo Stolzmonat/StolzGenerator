@@ -6,6 +6,7 @@ export class ImagePositionStore {
   private _offsetX: number = 0;
   private _offsetY: number = 0;
   private _scale: number = 100;
+  private _aspectRatioScale: number = 1; // Standardmäßig Original-Seitenverhältnis
   
   // Singleton-Zugriff
   public static getInstance(): ImagePositionStore {
@@ -44,12 +45,21 @@ export class ImagePositionStore {
     this._scale = value;
   }
   
+  public getAspectRatioScale(): number {
+    return this._aspectRatioScale;
+  }
+  
+  public setAspectRatioScale(value: number): void {
+    this._aspectRatioScale = value;
+  }
+  
   // Hilfsmethode, um den aktuellen Status abzurufen
   public getState() {
     return {
       offsetX: this._offsetX,
       offsetY: this._offsetY,
-      scale: this._scale
+      scale: this._scale,
+      aspectRatioScale: this._aspectRatioScale
     };
   }
 }

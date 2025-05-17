@@ -58,6 +58,7 @@ export async function drawToCanvas(
     const offsetX = options.imageOffsetX || 0;
     const offsetY = options.imageOffsetY || 0;
     const scale = (options.imageScale || 100) / 100;
+    const aspectRatioScale = options.aspectRatioScale || 1;
     
     // Zentrum des Canvas
     const centerX = canvas.width / 2;
@@ -73,19 +74,23 @@ export async function drawToCanvas(
     ctx.scale(scale, scale);
     
     // Berechne die Größe basierend auf dem Ausschnitt und Seitenverhältnis
-    const aspectRatio = selectedImage.width / selectedImage.height;
+    // Das ursprüngliche Seitenverhältnis des Bildes
+    const originalAspectRatio = selectedImage.width / selectedImage.height;
+    // Das angepasste Seitenverhältnis mit dem Skalierungsfaktor
+    const adjustedAspectRatio = originalAspectRatio * aspectRatioScale;
+    
     let width, height;
     
     if (options.cutoutType === CutoutType.OVERLAY) {
       // Bei Overlay, berechne basierend auf Canvas-Größe
-      if (aspectRatio >= 1) {
+      if (adjustedAspectRatio >= 1) {
         // Breiteres Bild
         width = canvas.width;
-        height = width / aspectRatio;
+        height = width / adjustedAspectRatio;
       } else {
         // Höheres Bild
         height = canvas.height;
-        width = height * aspectRatio;
+        width = height * adjustedAspectRatio;
       }
     } else {
       // Bei Ausschnitt (Kreis/Quadrat)
@@ -93,24 +98,15 @@ export async function drawToCanvas(
         ? ((canvas.width / 2) * options.cutoutSize) / 100 * 2 // Durchmesser
         : canvas.width * (options.cutoutSize / 100);
       
-      if (options.resizeInwards) {
-        if (aspectRatio >= 1) {
-          // Breiteres Bild
-          height = cutoutSize;
-          width = height * aspectRatio;
-        } else {
-          // Höheres Bild
-          width = cutoutSize;
-          height = width / aspectRatio;
-        }
+      // Berechne basierend auf dem Ausschnitt und Seitenverhältnis
+      if (adjustedAspectRatio >= 1) {
+        // Breiteres Bild
+        height = cutoutSize;
+        width = height * adjustedAspectRatio;
       } else {
-        // Fülle den Ausschnitt aus
-        const minScale = Math.max(
-          cutoutSize / selectedImage.width,
-          cutoutSize / selectedImage.height
-        );
-        width = selectedImage.width * minScale;
-        height = selectedImage.height * minScale;
+        // Höheres Bild
+        width = cutoutSize;
+        height = width / adjustedAspectRatio;
       }
     }
     

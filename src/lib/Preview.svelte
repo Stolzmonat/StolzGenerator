@@ -40,6 +40,11 @@
         imageStore.setScale(options.imageScale);
     }
 
+    // Wenn sich das Seitenverhältnis über den Slider ändert
+    $: if (options.aspectRatioScale !== undefined && options.aspectRatioScale !== imageStore.getAspectRatioScale()) {
+        imageStore.setAspectRatioScale(options.aspectRatioScale);
+    }
+
     function fixRes() {
         setTimeout(() => {
             canvas.width = canvas.getBoundingClientRect().width;
@@ -67,6 +72,7 @@
                 options.imageOffsetX = currentState.offsetX;
                 options.imageOffsetY = currentState.offsetY;
                 options.imageScale = currentState.scale;
+                options.aspectRatioScale = currentState.aspectRatioScale;
                 
                 await drawToCanvas(canvas, ctx, selectedImage, options, now);
                 isDrawing = false;
